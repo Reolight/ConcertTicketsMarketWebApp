@@ -10,4 +10,3 @@ namespace ConcertTicketsMarketWebApp.Areas.Identity.Data;
 public class AppUser : IdentityUser
 {
 }
-

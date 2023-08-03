@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ConcertTicketsMarketWebApp.Data;
 using ConcertTicketsMarketWebApp.Areas.Identity.Data;
+using ConcertTicketsMarketWebApp.Services.EmailService;
 
 namespace ConcertTicketsMarketWebApp
 {
@@ -10,12 +11,25 @@ namespace ConcertTicketsMarketWebApp
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var connectionString = builder.Configuration.GetConnectionString("IdentityContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityContextConnection' not found.");
+            (var identityConnectionString, var dataContext) = (
+                    builder.Configuration.GetConnectionString("IdentityContextConnection"),
+                    builder.Configuration.GetConnectionString("DataContextConnection")
+            );
 
-            builder.Services.AddDbContext<IdentityContext>(options => options.UseSqlServer(connectionString));
+            var EmailServiceConfigs = builder.Configuration
+                .GetSection("EmailServiceConfigurations")
+                .Get<EmailServiceConfigurations>() ?? throw new InvalidOperationException("Email configs are can not be read");
 
-            builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<IdentityContext>();
+            if (string.IsNullOrEmpty(identityConnectionString) || string.IsNullOrEmpty(dataContext))
+                throw new InvalidOperationException("Detected empty connection string...");
 
+            builder.Services.AddDbContext<IdentityContext>(
+                options => options.UseSqlServer(identityConnectionString));
+
+            builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<IdentityContext>();
+
+            builder.Services.AddSingleton(new EmailService(EmailServiceConfigs));
             // Add services to the container.
 
             builder.Services.AddControllersWithViews();
