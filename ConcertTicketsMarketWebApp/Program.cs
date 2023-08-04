@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ConcertTicketsMarketWebApp.Data;
 using ConcertTicketsMarketWebApp.Areas.Identity.Data;
@@ -12,26 +11,21 @@ namespace ConcertTicketsMarketWebApp
         {
             var builder = WebApplication.CreateBuilder(args);
             (var identityConnectionString, var dataContext) = (
-                    builder.Configuration.GetConnectionString("IdentityContextConnection"),
+                    builder.Configuration.GetConnectionString("IdentityContextConnection")
+                        ?? throw new InvalidOperationException("There is no identity db connection string"),
                     builder.Configuration.GetConnectionString("DataContextConnection")
+                        ?? throw new InvalidOperationException("There is no data context connection string")
             );
 
-            var EmailServiceConfigs = builder.Configuration
-                .GetSection("EmailServiceConfigurations")
-                .Get<EmailServiceConfigurations>() ?? throw new InvalidOperationException("Email configs are can not be read");
-
-            if (string.IsNullOrEmpty(identityConnectionString) || string.IsNullOrEmpty(dataContext))
-                throw new InvalidOperationException("Detected empty connection string...");
-
-            builder.Services.AddDbContext<IdentityContext>(
-                options => options.UseSqlServer(identityConnectionString));
+            // Add services to the container.            
+            builder.Services.AddDbContext<IdentityContext>
+                (options => options.UseSqlServer(identityConnectionString));
 
             builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<IdentityContext>();
 
-            builder.Services.AddSingleton(new EmailService(EmailServiceConfigs));
-            // Add services to the container.
 
+            builder.Services.AddEmailService().WithOptions(builder.Configuration);
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
@@ -47,6 +41,8 @@ namespace ConcertTicketsMarketWebApp
             app.UseStaticFiles();
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",

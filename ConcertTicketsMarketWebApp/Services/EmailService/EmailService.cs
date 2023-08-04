@@ -1,16 +1,18 @@
 ﻿using MailKit.Net.Smtp;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.Extensions.Options;
 using MimeKit;
 
 namespace ConcertTicketsMarketWebApp.Services.EmailService
 {
-    public class EmailService
+    public class EmailService : IEmailService
     {
         private readonly EmailServiceConfigurations _configurations;
 
-        public EmailService(EmailServiceConfigurations configurations)
-            => _configurations = configurations;
+        public EmailService(IOptions<EmailServiceConfigurations> configurations)
+            => _configurations = configurations.Value;
 
-        public async Task<bool> SendEmail(EmailBoxInfo receiver, Email email)
+        public async Task<bool> SendEmailAsync(EmailBoxInfo receiver, Email email)
         {
             var message = new MimeMessage();
             message.From.Add((MailboxAddress)_configurations.ServerMailBoxInfo);
