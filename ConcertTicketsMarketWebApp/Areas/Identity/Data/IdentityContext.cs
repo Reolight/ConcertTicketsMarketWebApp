@@ -1,14 +1,17 @@
 ﻿using ConcertTicketsMarketWebApp.Areas.Identity.Data;
+using Duende.IdentityServer.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace ConcertTicketsMarketWebApp.Data;
 
-public class IdentityContext : IdentityDbContext<AppUser>
+public class IdentityContext : ApiAuthorizationDbContext<AppUser>
 {
-    public IdentityContext(DbContextOptions<IdentityContext> options)
-        : base(options)
+    public IdentityContext(DbContextOptions<IdentityContext> options, IOptions<OperationalStoreOptions> operationalStoreOptions)
+        : base(options, operationalStoreOptions)
     {
     }
 

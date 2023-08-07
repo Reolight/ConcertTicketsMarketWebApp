@@ -1,7 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using ConcertTicketsMarketWebApp.Data;
 using ConcertTicketsMarketWebApp.Areas.Identity.Data;
 using ConcertTicketsMarketWebApp.Services.EmailService;
+using Microsoft.Build.Framework;
+using Microsoft.AspNetCore.Authentication;
 
 namespace ConcertTicketsMarketWebApp
 {
@@ -21,9 +25,7 @@ namespace ConcertTicketsMarketWebApp
             builder.Services.AddDbContext<IdentityContext>
                 (options => options.UseSqlServer(identityConnectionString));
 
-            builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<IdentityContext>();
-
+            builder.Services.AddMyIdentity<AppUser, IdentityContext>();
 
             builder.Services.AddEmailService().WithOptions(builder.Configuration);
             builder.Services.AddControllersWithViews();
@@ -41,9 +43,10 @@ namespace ConcertTicketsMarketWebApp
             app.UseStaticFiles();
             app.UseRouting();
 
+            app.UseIdentityServer();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller}/{action=Index}/{id?}");
