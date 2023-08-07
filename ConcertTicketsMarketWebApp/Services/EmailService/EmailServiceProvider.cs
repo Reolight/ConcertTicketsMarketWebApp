@@ -1,4 +1,6 @@
-﻿namespace ConcertTicketsMarketWebApp.Services.EmailService
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+
+namespace ConcertTicketsMarketWebApp.Services.EmailService
 {
     public static class EmailServiceExtension
     {
@@ -6,6 +8,6 @@
             => services.Configure<EmailServiceConfigurations>(config.GetSection("EmailServiceConfigurations"));
             
         public static IServiceCollection AddEmailService(this IServiceCollection services)
-            => services.AddTransient<IEmailService, EmailService>();
+            => services.AddTransient<IEmailSender, EmailService>();
     }
 }

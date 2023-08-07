@@ -6,6 +6,7 @@ using ConcertTicketsMarketWebApp.Areas.Identity.Data;
 using ConcertTicketsMarketWebApp.Services.EmailService;
 using Microsoft.Build.Framework;
 using Microsoft.AspNetCore.Authentication;
+using System.Reflection;
 
 namespace ConcertTicketsMarketWebApp
 {
@@ -14,20 +15,18 @@ namespace ConcertTicketsMarketWebApp
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            (var identityConnectionString, var dataContext) = (
-                    builder.Configuration.GetConnectionString("IdentityContextConnection")
-                        ?? throw new InvalidOperationException("There is no identity db connection string"),
-                    builder.Configuration.GetConnectionString("DataContextConnection")
-                        ?? throw new InvalidOperationException("There is no data context connection string")
-            );
 
-            // Add services to the container.            
-            builder.Services.AddDbContext<IdentityContext>
-                (options => options.UseSqlServer(identityConnectionString));
+            // Configuring two databases in ext. method.
+            builder.Services.AddDbContextForUsersAndData<IdentityContext, AppDbContext, AppUser>(builder.Configuration);
 
-            builder.Services.AddMyIdentity<AppUser, IdentityContext>();
+            // Configuring Identity and roles
+            builder.Services.AddIdentityWithJwtAndRoles<AppUser, IdentityContext>();
 
+            // Configuring email service
             builder.Services.AddEmailService().WithOptions(builder.Configuration);
+
+            builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
@@ -38,6 +37,9 @@ namespace ConcertTicketsMarketWebApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            // Here are roles added via extension method
+            app.UseDefinedRoles();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
