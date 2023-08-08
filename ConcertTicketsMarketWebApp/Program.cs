@@ -1,12 +1,8 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using ConcertTicketsMarketWebApp.Data;
 using ConcertTicketsMarketWebApp.Areas.Identity.Data;
-using ConcertTicketsMarketWebApp.Services.EmailService;
-using Microsoft.Build.Framework;
-using Microsoft.AspNetCore.Authentication;
+using EmailService;
 using System.Reflection;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace ConcertTicketsMarketWebApp
 {
@@ -15,6 +11,7 @@ namespace ConcertTicketsMarketWebApp
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddOptions();
 
             // Configuring two databases in ext. method.
             builder.Services.AddDbContextForUsersAndData<IdentityContext, AppDbContext, AppUser>(builder.Configuration);
@@ -23,12 +20,15 @@ namespace ConcertTicketsMarketWebApp
             builder.Services.AddIdentityWithJwtAndRoles<AppUser, IdentityContext>();
 
             // Configuring email service
-            builder.Services.AddEmailService().WithOptions(builder.Configuration);
+            builder.Services.Configure<EmailServiceConfigurations>(
+                builder.Configuration.GetSection("EmailServiceConfigurations"));
+            builder.Services.AddTransient<IEmailService, EmailService.EmailService>();
+
 
             builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddRazorPages();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -52,6 +52,7 @@ namespace ConcertTicketsMarketWebApp
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller}/{action=Index}/{id?}");
+            app.MapRazorPages();
 
             app.MapFallbackToFile("index.html");
 

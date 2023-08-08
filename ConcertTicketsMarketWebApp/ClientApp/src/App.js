@@ -7,7 +7,9 @@ import './custom.css';
 export default class App extends Component {
   static displayName = App.name;
 
-  render() {
+
+    render() {
+        console.log(AppRoutes);
     return (
       <Layout>
         <Routes>

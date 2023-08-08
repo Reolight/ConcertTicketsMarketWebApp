@@ -1,6 +1,6 @@
 ﻿using MimeKit;
 
-namespace ConcertTicketsMarketWebApp.Services.EmailService
+namespace EmailService
 {
     public class EmailBoxInfo
     {

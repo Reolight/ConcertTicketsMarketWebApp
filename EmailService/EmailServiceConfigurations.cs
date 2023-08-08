@@ -1,7 +1,6 @@
 ﻿using MimeKit;
-using System.Composition.Convention;
 
-namespace ConcertTicketsMarketWebApp.Services.EmailService
+namespace EmailService
 {
     public class EmailServiceConfigurations
     {

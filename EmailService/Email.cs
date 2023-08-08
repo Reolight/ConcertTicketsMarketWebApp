@@ -1,7 +1,7 @@
 ﻿using MimeKit;
 using MimeKit.Text;
 
-namespace ConcertTicketsMarketWebApp.Services.EmailService
+namespace EmailService
 {
     public class Email
     {

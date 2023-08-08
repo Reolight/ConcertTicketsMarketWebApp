@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConcertTicketsMarketWebApp", "ConcertTicketsMarketWebApp\ConcertTicketsMarketWebApp.csproj", "{063F6DC9-8EEF-49B5-B034-1FD33BF3F4B9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailService", "EmailService\EmailService.csproj", "{D0C6C795-17A4-43BB-9DC3-32189AD9DEDC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{063F6DC9-8EEF-49B5-B034-1FD33BF3F4B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{063F6DC9-8EEF-49B5-B034-1FD33BF3F4B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{063F6DC9-8EEF-49B5-B034-1FD33BF3F4B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0C6C795-17A4-43BB-9DC3-32189AD9DEDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0C6C795-17A4-43BB-9DC3-32189AD9DEDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0C6C795-17A4-43BB-9DC3-32189AD9DEDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0C6C795-17A4-43BB-9DC3-32189AD9DEDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

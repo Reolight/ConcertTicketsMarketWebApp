@@ -1,4 +1,4 @@
-﻿namespace ConcertTicketsMarketWebApp.Services.EmailService
+﻿namespace EmailService
 {
     public interface IEmailService
     {

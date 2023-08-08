@@ -39,7 +39,7 @@ namespace ConcertTicketsMarketWebApp
             where IdentityDb : ApiAuthorizationDbContext<AppUser>
             where AppDb : DbContext
         {
-            (var identityConnectionString, var dataContext) = (
+            var (identityConnectionString, dataContext) = (
                     configuration.GetConnectionString("IdentityContextConnection")
                         ?? throw new InvalidOperationException("There is no identity db connection string"),
                     configuration.GetConnectionString("DataContextConnection")
@@ -48,7 +48,7 @@ namespace ConcertTicketsMarketWebApp
 
             // Add services to the container.            
             services.AddDbContext<IdentityContext>
-                (options => options.UseSqlServer(identityConnectionString));
+                (options => options.UseInMemoryDatabase("IdentityDb"/*identityConnectionString*/));
             services.AddDbContextPool<AppDbContext>(
                 options => options.UseSqlServer(dataContext));
 
