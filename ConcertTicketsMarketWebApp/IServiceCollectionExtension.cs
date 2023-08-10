@@ -48,7 +48,7 @@ namespace ConcertTicketsMarketWebApp
 
             // Add services to the container.            
             services.AddDbContext<IdentityContext>
-                (options => options.UseInMemoryDatabase("IdentityDb"/*identityConnectionString*/));
+                (options => options.UseSqlServer("IdentityDb"/*identityConnectionString*/));
             services.AddDbContextPool<AppDbContext>(
                 options => options.UseSqlServer(dataContext));
 
