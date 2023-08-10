@@ -39,6 +39,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ConcertTicketsMarketModel\ConcertTicketsMarketModel.csproj" />
     <ProjectReference Include="..\EmailService\EmailService.csproj" />
+    <ProjectReference Include="..\SorterByCriteria\SorterByCriteria.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
