@@ -18,6 +18,9 @@ namespace ConcertTicketsMarketWebApp.CQRS.Concerts
                 var concert = await _context.Concerts.FindAsync(request.ConcertId) ??
                               throw new NullReferenceException($"Concert with ID {request.ConcertId} does not exist");
 
+                if (concert.StartTime + concert.Duration > DateTime.UtcNow)
+                    throw new InvalidOperationException("Impossible to delete scheduled concert!");
+                
                 _context.Concerts.Remove(concert);
                 await _context.SaveChangesAsync(cancellationToken);
                 return true;

@@ -26,7 +26,12 @@ namespace ConcertTicketsMarketWebApp.Data
             modelBuilder.Entity<Ticket>()
                 .Property(t => t.Price)
                 .HasColumnType("decimal(18,4)");
-            
+
+            modelBuilder.Entity<Band>()
+                .HasMany(band => band.Performers)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Restrict);
+
             base.OnModelCreating(modelBuilder);
         }
     }
