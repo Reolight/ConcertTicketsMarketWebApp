@@ -27,7 +27,7 @@ namespace ConcertTicketsMarketWebApp
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Admin", policy =>
+                options.AddPolicy(Roles.Admin, policy =>
                     policy.RequireClaim(ClaimTypes.Role, Roles.Admin));
             });
 

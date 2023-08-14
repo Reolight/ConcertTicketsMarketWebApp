@@ -1,6 +1,7 @@
 ﻿using ConcertTicketsMarketModel.Concerts;
 using ConcertTicketsMarketWebApp.Data;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SorterByCriteria;
 
 namespace ConcertTicketsMarketWebApp.CQRS.Concerts
@@ -21,9 +22,10 @@ namespace ConcertTicketsMarketWebApp.CQRS.Concerts
         public Task<List<Concert>> Handle(GetConcertsRequest request, CancellationToken cancellationToken)
         {
             var concerts = _context.Concerts
-                    .AsQueryable()
-                    .SortByCriteria(request.Criteria)
-                    .ToList();
+                .AsQueryable()
+                .SortByCriteria(request.Criteria)
+                .AsNoTracking()
+                .ToList();
             return Task.FromResult(concerts);
         }
     }

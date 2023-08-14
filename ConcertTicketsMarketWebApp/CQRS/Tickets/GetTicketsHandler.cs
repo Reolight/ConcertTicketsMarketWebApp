@@ -2,6 +2,7 @@
 using ConcertTicketsMarketWebApp.CQRS.Performers;
 using ConcertTicketsMarketWebApp.Data;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SorterByCriteria;
 
 namespace ConcertTicketsMarketWebApp.CQRS.Tickets
@@ -21,6 +22,7 @@ namespace ConcertTicketsMarketWebApp.CQRS.Tickets
             return 
                 _context.Tickets.Where(ticket => ticket.ConcertId == concertId && ticket.OwnerId == null)
                 .SortByCriteria(sortingCriteria)
+                .AsNoTracking()
                 .ToList();
         }
 
@@ -31,6 +33,7 @@ namespace ConcertTicketsMarketWebApp.CQRS.Tickets
                 .Where(ticket => ticket.ConcertId == concertId &&
                                  (ticket.OwnerId == null || ticket.OwnerId == userId))
                 .SortByCriteria(sortingCriteria)
+                .AsNoTracking()
                 .ToList();
         }
 
@@ -39,6 +42,7 @@ namespace ConcertTicketsMarketWebApp.CQRS.Tickets
             return _context.Tickets
                 .Where(ticket => ticket.ConcertId == concertId)
                 .SortByCriteria(sortingCriteria)
+                .AsNoTracking()
                 .ToList();
         }
 
