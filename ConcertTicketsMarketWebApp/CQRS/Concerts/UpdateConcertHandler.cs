@@ -1,4 +1,5 @@
 ﻿using ConcertTicketsMarketWebApp.Data;
+using Mapster;
 using MediatR;
 
 namespace ConcertTicketsMarketWebApp.CQRS.Concerts
@@ -15,7 +16,9 @@ namespace ConcertTicketsMarketWebApp.CQRS.Concerts
         {
             try
             {
-                _context.Concerts.Update(request);
+                if (await _context.Concerts.FindAsync(request.Id) is not { } concert)
+                    throw new NullReferenceException($"There is no Concert with ID {request.Id}");
+                request.Adapt(concert);
                 _logger.LogInformation("Updated Concert ID: {ConcertId}", request.Id);
                 await _context.SaveChangesAsync(cancellationToken);
                 return true;

@@ -2,6 +2,7 @@ using ConcertTicketsMarketWebApp.Data;
 using ConcertTicketsMarketWebApp.Areas.Identity.Data;
 using EmailService;
 using System.Reflection;
+using Mapster;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace ConcertTicketsMarketWebApp
@@ -26,7 +27,8 @@ namespace ConcertTicketsMarketWebApp
 
 
             builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-
+            builder.Services.AddMapsterConfigured();
+            
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             var app = builder.Build();

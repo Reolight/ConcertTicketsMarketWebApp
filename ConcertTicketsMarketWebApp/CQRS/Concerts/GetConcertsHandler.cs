@@ -1,32 +1,39 @@
 ﻿using ConcertTicketsMarketModel.Concerts;
 using ConcertTicketsMarketWebApp.Data;
+using Mapster;
+using MapsterMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SorterByCriteria;
+using ViewModels;
 
 namespace ConcertTicketsMarketWebApp.CQRS.Concerts
 {
     public class GetConcertsHandler : IRequestHandler<
         GetConcertsRequest,
-        List<Concert>
+        List<ConcertSuperficial>
     >
     {
+        private readonly IMapper _mapper;
         private readonly AppDbContext _context;
         private readonly ILogger<GetConcertsHandler> _logger;
-        public GetConcertsHandler(AppDbContext context, ILogger<GetConcertsHandler> logger)
+        public GetConcertsHandler(AppDbContext context, ILogger<GetConcertsHandler> logger, IMapper mapper)
         {
             _context = context;
             _logger = logger;
+            _mapper = mapper;
         }
 
-        public Task<List<Concert>> Handle(GetConcertsRequest request, CancellationToken cancellationToken)
+        public Task<List<ConcertSuperficial>> Handle(GetConcertsRequest request, CancellationToken cancellationToken)
         {
-            var concerts = _context.Concerts
+            var query = _context.Concerts
                 .AsQueryable()
                 .SortByCriteria(request.Criteria)
-                .AsNoTracking()
+                .AsNoTracking();
+            var concertsVm = _mapper.From(query)
+                .ProjectToType<ConcertSuperficial>()
                 .ToList();
-            return Task.FromResult(concerts);
+            return Task.FromResult(concertsVm);
         }
     }
 }

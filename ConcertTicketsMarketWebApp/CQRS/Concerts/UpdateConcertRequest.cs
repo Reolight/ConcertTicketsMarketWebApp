@@ -1,7 +1,7 @@
-﻿using ConcertTicketsMarketModel.Concerts;
-using MediatR;
+﻿using MediatR;
+using ViewModels;
 
 namespace ConcertTicketsMarketWebApp.CQRS.Concerts
 {
-    public class UpdateConcertRequest : Concert, IRequest<bool> { }
+    public class UpdateConcertRequest : ConcertSuperficial, IRequest<bool> { }
 }

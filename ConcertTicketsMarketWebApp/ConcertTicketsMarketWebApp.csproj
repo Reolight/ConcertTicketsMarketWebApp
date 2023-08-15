@@ -14,7 +14,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Braintree" Version="5.18.0" />
     <PackageReference Include="MailKit" Version="4.1.0" />
+    <PackageReference Include="Mapster" Version="7.4.0-pre06" />
+    <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1-pre02" />
+    <PackageReference Include="Mapster.EFCore" Version="5.1.1-pre02" />
     <PackageReference Include="MediatR" Version="12.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="7.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.9" />
@@ -40,6 +44,11 @@
     <ProjectReference Include="..\ConcertTicketsMarketModel\ConcertTicketsMarketModel.csproj" />
     <ProjectReference Include="..\EmailService\EmailService.csproj" />
     <ProjectReference Include="..\SorterByCriteria\SorterByCriteria.csproj" />
+    <ProjectReference Include="..\ViewModels\ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CQRS\Order" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -1,9 +1,10 @@
 ﻿using ConcertTicketsMarketModel.Concerts;
 using MediatR;
+using ViewModels;
 
 namespace ConcertTicketsMarketWebApp.CQRS.Concerts;
 
-public class GetConcertByIdRequest : IRequest<Concert?>
+public class GetConcertByIdRequest : IRequest<ConcertSuperficial?>
 {
     public Guid ConcertId { get; set; }
 }

@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using ConcertTicketsMarketModel.Concerts;
+using ConcertTicketsMarketModel.Performers;
+using Mapster;
+using ViewModels;
 
 namespace ConcertTicketsMarketWebApp
 {
@@ -53,6 +57,20 @@ namespace ConcertTicketsMarketWebApp
                 options => options.UseSqlServer(dataContext));
 
             return services;
+        }
+
+        public static void AddMapsterConfigured(this IServiceCollection services)
+        {
+            TypeAdapterConfig<Concert, ConcertSuperficial>
+                .NewConfig()
+                .Fork(config => config.Default.PreserveReference(true))
+                .PreserveReference(true);
+            TypeAdapterConfig<Performer, PerformerSuperficial>
+                .NewConfig()
+                .Map(dest => dest.PerformerType,
+                    src => PerformerTypeConverter.GetPerformerType(src))
+                .PreserveReference(true);
+            services.AddMapster();
         }
     }
 }
