@@ -2,8 +2,6 @@ using ConcertTicketsMarketWebApp.Data;
 using ConcertTicketsMarketWebApp.Areas.Identity.Data;
 using EmailService;
 using System.Reflection;
-using Mapster;
-using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace ConcertTicketsMarketWebApp
 {

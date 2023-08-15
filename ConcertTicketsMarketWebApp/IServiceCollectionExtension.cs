@@ -14,16 +14,16 @@ namespace ConcertTicketsMarketWebApp
 {
     public static class ServiceCollectionExtension
     {
-        public static IServiceCollection AddIdentityWithJwtAndRoles<User, Context>(this IServiceCollection services)
-                where User : IdentityUser
-                where Context : ApiAuthorizationDbContext<User>
+        public static IServiceCollection AddIdentityWithJwtAndRoles<TUser, TContext>(this IServiceCollection services)
+                where TUser : IdentityUser
+                where TContext : ApiAuthorizationDbContext<TUser>
         {
-            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<TUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<Context>();
+                .AddEntityFrameworkStores<TContext>();
 
             services.AddIdentityServer()
-                .AddApiAuthorization<User, Context>()
+                .AddApiAuthorization<TUser, TContext>()
                 .AddProfileService<ProfileService>();
 
             services.AddAuthentication()
@@ -38,10 +38,10 @@ namespace ConcertTicketsMarketWebApp
             return services;
         }
 
-        public static IServiceCollection AddDbContextForUsersAndData<IdentityDb, AppDb, AppUser>(this IServiceCollection services, ConfigurationManager configuration)
-            where AppUser : IdentityUser
-            where IdentityDb : ApiAuthorizationDbContext<AppUser>
-            where AppDb : DbContext
+        public static IServiceCollection AddDbContextForUsersAndData<TIdentityContext, TContext, TUser>(this IServiceCollection services, ConfigurationManager configuration)
+            where TUser : IdentityUser
+            where TIdentityContext : ApiAuthorizationDbContext<TUser>
+            where TContext : DbContext
         {
             var (identityConnectionString, dataContext) = (
                     configuration.GetConnectionString("IdentityContextConnection")
@@ -52,7 +52,7 @@ namespace ConcertTicketsMarketWebApp
 
             // Add services to the container.            
             services.AddDbContext<IdentityContext>
-                (options => options.UseSqlServer("IdentityDb"/*identityConnectionString*/));
+                (options => options.UseSqlServer(identityConnectionString));
             services.AddDbContextPool<AppDbContext>(
                 options => options.UseSqlServer(dataContext));
 

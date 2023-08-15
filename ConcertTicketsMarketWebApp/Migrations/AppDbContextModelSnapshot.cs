@@ -148,6 +148,9 @@ namespace ConcertTicketsMarketWebApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("BookingTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("ConcertId")
                         .HasColumnType("uniqueidentifier");
 
@@ -189,7 +192,7 @@ namespace ConcertTicketsMarketWebApp.Migrations
             modelBuilder.Entity("ConcertTicketsMarketModel.Concerts.Concert", b =>
                 {
                     b.HasOne("ConcertTicketsMarketModel.Performers.Performer", "Performer")
-                        .WithMany()
+                        .WithMany("Concerts")
                         .HasForeignKey("PerformerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -218,7 +221,8 @@ namespace ConcertTicketsMarketWebApp.Migrations
                 {
                     b.HasOne("ConcertTicketsMarketModel.Performers.Band", null)
                         .WithMany("Performers")
-                        .HasForeignKey("BandId");
+                        .HasForeignKey("BandId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("ConcertTicketsMarketModel.Ticket", b =>
@@ -237,6 +241,11 @@ namespace ConcertTicketsMarketWebApp.Migrations
                     b.Navigation("Promocodes");
 
                     b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("ConcertTicketsMarketModel.Performers.Performer", b =>
+                {
+                    b.Navigation("Concerts");
                 });
 
             modelBuilder.Entity("ConcertTicketsMarketModel.Performers.Band", b =>
