@@ -1,15 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import { Layout } from './components/Layout';
 import './custom.css';
+import { useDispatch } from 'react-redux';
+import { tryLogin } from './features/userSlice';
 
-export default class App extends Component {
-  static displayName = App.name;
+export default function App() {
+  const displayName = App.name;
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(tryLogin());
+  });
 
-    render() {
-        console.log(AppRoutes);
     return (
       <Layout>
         <Routes>
@@ -20,5 +24,4 @@ export default class App extends Component {
         </Routes>
       </Layout>
     );
-  }
 }

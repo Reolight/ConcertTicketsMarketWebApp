@@ -19,9 +19,9 @@ public class ConcertsController : ControllerBase
     }
 
     [HttpGet, AllowAnonymous]
-    public async Task<IActionResult> GetAllConcerts([FromQuery] GetConcertsRequest requestFilters)
+    public async Task<IActionResult> GetAllConcerts([FromQuery] GetConcertsRequest criteria)
     {
-        var foundConcerts = await _mediator.Send(requestFilters, CancellationToken.None);
+        var foundConcerts = await _mediator.Send(criteria, CancellationToken.None);
         return Ok(foundConcerts);
     }
 

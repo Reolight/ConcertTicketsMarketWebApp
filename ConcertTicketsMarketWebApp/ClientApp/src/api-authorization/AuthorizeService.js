@@ -1,7 +1,9 @@
 import { UserManager, WebStorageStateStore } from 'oidc-client';
 import { ApplicationPaths, ApplicationName } from './ApiAuthorizationConstants';
+import { update } from '../features/userSlice';
 
 export class AuthorizeService {
+  userUpdateDispatch = update;
   _callbacks = [];
   _nextSubscriptionId = 0;
   _user = null;
@@ -130,6 +132,7 @@ export class AuthorizeService {
   }
 
   updateState(user) {
+    this.userUpdateDispatch(user);
     this._user = user;
     this._isAuthenticated = !!this._user;
     this.notifySubscribers();

@@ -10,7 +10,7 @@ public class ConcertSuperficial
     public string Name { get; set; } = null!;
     public ConcertType Type { get; set; }
     public DateTime StartTime { get; set; }
-    public TimeSpan Duration { get; set; }
+    public int Duration { get; set; }
     public AgeRating Rating { get; set; }
     public Location Place { get; set; } = null!;
     public PerformerSuperficial Performer { get; set; } = null!;

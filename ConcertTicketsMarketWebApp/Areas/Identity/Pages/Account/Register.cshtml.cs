@@ -118,7 +118,8 @@ namespace ConcertTicketsMarketWebApp.Areas.Identity.Pages.Account
                 };
 
                 var user = CreateUser();
-
+                bool isFirstUser = !_userManager.Users.Any();
+                
                 await _userStore.SetUserNameAsync(user, Input.Name, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -126,7 +127,11 @@ namespace ConcertTicketsMarketWebApp.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
+                    
+                    // It is supposed that first registered user is admin
+                    if (isFirstUser) 
+                        await _userManager.AddToRoleAsync(user, Roles.Admin);
+                    
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

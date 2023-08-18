@@ -18,7 +18,16 @@ namespace ConcertTicketsMarketWebApp
                 where TUser : IdentityUser
                 where TContext : ApiAuthorizationDbContext<TUser>
         {
-            services.AddDefaultIdentity<TUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<TUser>(
+                    options =>
+                    {
+                        options.SignIn.RequireConfirmedAccount = true;
+                        options.User.RequireUniqueEmail = true;
+
+                        options.Password.RequireUppercase = false;
+                        options.Password.RequireNonAlphanumeric = false;
+                        options.Password.RequiredLength = 5;
+                    })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<TContext>();
 

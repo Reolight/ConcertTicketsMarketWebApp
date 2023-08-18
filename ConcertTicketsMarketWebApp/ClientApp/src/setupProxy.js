@@ -4,6 +4,12 @@ const { env } = require('process');
 const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_HTTPS_PORT}` :
   env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(';')[0] : 'http://localhost:10372';
 
+export const BackRoutes = {
+  Concerts: '/Concerts',
+  Performers: '/Performers',
+  Tickets: '/Tickets'
+}
+
 const context = [
     "/_configuration",
     "/.well-known",
@@ -12,7 +18,8 @@ const context = [
     "/ApplyDatabaseMigrations",
     "/_framework",
     "/subject",
-    "/Toggler"
+    "/Toggler",
+    Object.values(BackRoutes)
 ];
 
 const onError = (err, req, resp, target) => {

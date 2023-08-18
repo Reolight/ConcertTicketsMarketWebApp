@@ -1,4 +1,4 @@
-export const ApplicationName = 'SomeName';
+export const ApplicationName = 'ConcertTicketMarket';
 
 export const QueryParameterNames = {
   ReturnUrl: 'returnUrl',

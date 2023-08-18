@@ -23,7 +23,7 @@ namespace EmailService
             using var mailClient = new SmtpClient();
             try
             {
-                await mailClient.ConnectAsync(_configurations.MailServrerAddress, _configurations.MailServerPort, SecureSocketOptions.StartTls);
+                await mailClient.ConnectAsync(_configurations.MailServerAddress, _configurations.MailServerPort, SecureSocketOptions.StartTls);
                 await mailClient.AuthenticateAsync(_configurations.MailServerUsername, _configurations.MailServerPassword);
                 await mailClient.SendAsync(message);
                 _logger.LogInformation("Email is sent to {ReceiverEmail}", receiver.Email);

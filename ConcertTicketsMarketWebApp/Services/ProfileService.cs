@@ -3,6 +3,7 @@ using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using IdentityModel;
 
 namespace ConcertTicketsMarketWebApp.Services
 {
@@ -19,9 +20,14 @@ namespace ConcertTicketsMarketWebApp.Services
         {
             if (await _userManager.GetUserAsync(context.Subject) is not { } user)
                 return;
-            var roleClaims = (await _userManager.GetRolesAsync(user))
-                .Select(role => new Claim(ClaimTypes.Role, role));
-            context.IssuedClaims.AddRange(roleClaims);
+            List<Claim> claims = (await _userManager.GetRolesAsync(user))
+                .Select(role => new Claim(JwtClaimTypes.Role, role))
+                .ToList();
+            
+            // ReSharper disable once NullableWarningSuppressionIsUsed
+            claims.Add(new Claim(JwtClaimTypes.Name, user.UserName!));
+            
+            context.IssuedClaims.AddRange(claims);
         }
 
         public Task IsActiveAsync(IsActiveContext context)
