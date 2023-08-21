@@ -20,6 +20,8 @@ public class OidcConfigurationController : Controller
     public IActionResult GetClientRequestParameters([FromRoute] string clientId)
     {
         var parameters = _clientRequestParametersProvider.GetClientParameters(HttpContext, clientId);
+        _logger.LogInformation("Client with Id {ClientId} issued OIDC configs. Next data was given: {Data}",
+            clientId, parameters);
         return Ok(parameters);
     }
 }

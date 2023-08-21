@@ -28,7 +28,7 @@ namespace ConcertTicketsMarketWebApp.CQRS.Concerts
         {
             var query = _context.Concerts
                 .AsQueryable()
-                .SortByCriteria(request.Criteria)
+                .SortByCriteria(request.Sorting)
                 .AsNoTracking();
             var concertsVm = _mapper.From(query)
                 .ProjectToType<ConcertSuperficial>()

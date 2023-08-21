@@ -4,6 +4,8 @@ const { env } = require('process');
 const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_HTTPS_PORT}` :
   env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(';')[0] : 'http://localhost:10372';
 
+console.log(target);
+
 export const BackRoutes = {
   Concerts: '/Concerts',
   Performers: '/Performers',
@@ -39,6 +41,8 @@ module.exports = function (app) {
       Connection: 'Keep-Alive'
     }
   });
+
+  
 
   app.use(appProxy);
 };
