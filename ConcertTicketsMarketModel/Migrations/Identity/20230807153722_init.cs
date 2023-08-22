@@ -1,9 +1,8 @@
-﻿using System;
+﻿#nullable disable
+
 using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
-
-namespace ConcertTicketsMarketWebApp.Migrations.Identity
+namespace ConcertTicketsMarketModel.Migrations.Identity
 {
     /// <inheritdoc />
     public partial class init : Migration

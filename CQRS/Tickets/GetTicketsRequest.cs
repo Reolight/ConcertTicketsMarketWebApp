@@ -1,4 +1,5 @@
 ﻿using ConcertTicketsMarketModel;
+using ConcertTicketsMarketModel.Model;
 using MediatR;
 using SorterByCriteria;
 

@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ConcertTicketsMarketModel;
-using ConcertTicketsMarketModel.Concerts;
-using ConcertTicketsMarketModel.Performers;
+﻿using ConcertTicketsMarketModel.Model;
+using ConcertTicketsMarketModel.Model.Concerts;
+using ConcertTicketsMarketModel.Model.Performers;
+using Microsoft.EntityFrameworkCore;
 
-namespace ConcertTicketsMarketWebApp.Data
+namespace ConcertTicketsMarketModel.Data
 {
     public class AppDbContext : DbContext
     {

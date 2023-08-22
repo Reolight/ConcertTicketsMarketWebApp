@@ -1,4 +1,4 @@
-﻿namespace ConcertTicketsMarketModel.Performers
+﻿namespace ConcertTicketsMarketModel.Model.Performers
 {
     public class Band : Performer
     {

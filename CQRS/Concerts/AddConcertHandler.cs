@@ -1,4 +1,4 @@
-﻿using ConcertTicketsMarketWebApp.Data;
+﻿using ConcertTicketsMarketModel.Data;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

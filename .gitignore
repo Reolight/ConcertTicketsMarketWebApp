@@ -361,5 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/ConcertTicketsMarket/appsettings.json
+/ConcertTicketsMarket/appsettings.Development.json
 /ConcertTicketsMarketWebApp/appsettings.json
 /ConcertTicketsMarketWebApp/appsettings.Development.json

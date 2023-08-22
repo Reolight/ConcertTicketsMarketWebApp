@@ -5,8 +5,8 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using ConcertTicketsMarketModel.Data.Identity;
 using Microsoft.AspNetCore.Authorization;
-using ConcertTicketsMarketWebApp.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;

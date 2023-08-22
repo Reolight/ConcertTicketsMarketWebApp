@@ -1,4 +1,4 @@
-﻿namespace ConcertTicketsMarketModel.Concerts;
+﻿namespace ConcertTicketsMarketModel.Model.Concerts;
 
 public enum ConcertType
 {

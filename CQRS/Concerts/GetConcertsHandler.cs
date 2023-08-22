@@ -1,4 +1,4 @@
-﻿using ConcertTicketsMarketWebApp.Data;
+﻿using ConcertTicketsMarketModel.Data;
 using Mapster;
 using MapsterMapper;
 using MediatR;

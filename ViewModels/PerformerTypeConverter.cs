@@ -1,4 +1,4 @@
-﻿using ConcertTicketsMarketModel.Performers;
+﻿using ConcertTicketsMarketModel.Model.Performers;
 
 namespace ViewModels;
 

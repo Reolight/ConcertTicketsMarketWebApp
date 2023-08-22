@@ -1,12 +1,12 @@
-﻿using ConcertTicketsMarketModel.Concerts;
-using ConcertTicketsMarketModel.Performers;
+﻿using ConcertTicketsMarketModel.Model.Concerts;
+using ConcertTicketsMarketModel.Model.Performers;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 using ViewModels;
 
 namespace ConcertTicketsMarketWebApp
 {
-    public static class ServiceCollectionExtension
+    public static class MapsterConfigurationExtenstion
     {
         public static void AddMapsterConfiguration(this IServiceCollection services)
         {

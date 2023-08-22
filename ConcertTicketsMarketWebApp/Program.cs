@@ -1,8 +1,7 @@
-using ConcertTicketsMarketWebApp.Data;
-using ConcertTicketsMarketWebApp.Areas.Identity.Data;
 using EmailService;
 using System.Reflection;
 using ConcertTicketsMarketModel.Data;
+using ConcertTicketsMarketModel.Data.Identity;
 
 namespace ConcertTicketsMarketWebApp
 {

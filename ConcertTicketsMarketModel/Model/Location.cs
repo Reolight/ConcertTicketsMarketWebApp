@@ -1,4 +1,4 @@
-﻿namespace ConcertTicketsMarketModel
+﻿namespace ConcertTicketsMarketModel.Model
 {
     public class Location
     {

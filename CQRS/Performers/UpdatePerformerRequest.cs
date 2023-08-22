@@ -1,5 +1,6 @@
 ﻿// ReSharper disable NullableWarningSuppressionIsUsed
-using ConcertTicketsMarketModel.Performers;
+
+using ConcertTicketsMarketModel.Model.Performers;
 using MediatR;
 
 namespace ConcertTicketsMarketWebApp.CQRS.Performers

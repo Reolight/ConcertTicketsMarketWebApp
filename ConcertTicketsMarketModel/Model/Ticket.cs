@@ -1,7 +1,8 @@
 ﻿// ReSharper disable NullableWarningSuppressionIsUsed
-using ConcertTicketsMarketModel.Concerts;
 
-namespace ConcertTicketsMarketModel
+using ConcertTicketsMarketModel.Model.Concerts;
+
+namespace ConcertTicketsMarketModel.Model
 {
     /// <summary>
     /// <para>States are declared via nullability of BookingDate and Owner fields in the next ways: </para>

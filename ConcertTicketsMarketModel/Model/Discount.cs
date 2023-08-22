@@ -1,7 +1,8 @@
 ﻿// ReSharper disable NullableWarningSuppressionIsUsed
-using ConcertTicketsMarketModel.Concerts;
 
-namespace ConcertTicketsMarketModel
+using ConcertTicketsMarketModel.Model.Concerts;
+
+namespace ConcertTicketsMarketModel.Model
 {
     public class Discount
     {

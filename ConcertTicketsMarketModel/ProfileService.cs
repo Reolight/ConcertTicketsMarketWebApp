@@ -1,11 +1,11 @@
-﻿using ConcertTicketsMarketWebApp.Areas.Identity.Data;
+﻿using System.Security.Claims;
+using ConcertTicketsMarketModel.Data.Identity;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 using IdentityModel;
+using Microsoft.AspNetCore.Identity;
 
-namespace ConcertTicketsMarketWebApp.Services
+namespace ConcertTicketsMarketModel
 {
     public class ProfileService : IProfileService
     {

@@ -1,5 +1,5 @@
-﻿using ConcertTicketsMarketModel.Performers;
-using ConcertTicketsMarketWebApp.Data;
+﻿using ConcertTicketsMarketModel.Data;
+using ConcertTicketsMarketModel.Model.Performers;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

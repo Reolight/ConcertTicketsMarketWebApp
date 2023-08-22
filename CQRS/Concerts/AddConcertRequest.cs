@@ -1,4 +1,4 @@
-﻿using ConcertTicketsMarketModel.Concerts;
+﻿using ConcertTicketsMarketModel.Model.Concerts;
 using MediatR;
 
 namespace ConcertTicketsMarketWebApp.CQRS.Concerts

@@ -1,21 +1,17 @@
 ﻿using System.Security.Claims;
-using ConcertTicketsMarketWebApp;
-using ConcertTicketsMarketWebApp.Services;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using ConcertTicketsMarketModel.Data;
+using ConcertTicketsMarketModel.Data.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ConcertTicketsMarketModel.Data;
+namespace ConcertTicketsMarketModel;
 
 public static class AppDataExtension
 {
-    public static IServiceCollection AddDbContextForUsersAndData<TIdentityContext, TContext, TUser>(this IServiceCollection services, ConfigurationManager configuration)
-        where TUser : IdentityUser
-        where TIdentityContext : ApiAuthorizationDbContext<TUser>
-        where TContext : DbContext
+    public static IServiceCollection AddDbContextForUsersAndData(this IServiceCollection services, ConfigurationManager configuration)
     {
         var (identityConnectionString, dataContext) = (
             configuration.GetConnectionString("IdentityContextConnection") as string
@@ -25,19 +21,17 @@ public static class AppDataExtension
         );
 
         // Add services to the container.            
-        services.AddDbContext<TIdentityContext>
+        services.AddDbContext<IdentityContext>
             (options => options.UseSqlServer(identityConnectionString));
-        services.AddDbContextPool<TContext>(
+        services.AddDbContextPool<AppDbContext>(
             options => options.UseSqlServer(dataContext));
 
         return services;
     }
     
-    public static IServiceCollection AddIdentityWithJwtAndRoles<TUser, TContext>(this IServiceCollection services)
-        where TUser : IdentityUser
-        where TContext : ApiAuthorizationDbContext<TUser>
+    public static IServiceCollection AddIdentityWithJwtAndRoles(this IServiceCollection services)
     {
-        services.AddDefaultIdentity<TUser>(
+        services.AddDefaultIdentity<AppUser>(
                 options =>
                 {
                     options.SignIn.RequireConfirmedAccount = true;
@@ -48,10 +42,10 @@ public static class AppDataExtension
                     options.Password.RequiredLength = 5;
                 })
             .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<TContext>();
+            .AddEntityFrameworkStores<IdentityContext>();
 
         services.AddIdentityServer()
-            .AddApiAuthorization<TUser, TContext>()
+            .AddApiAuthorization<AppUser, IdentityContext>()
             .AddProfileService<ProfileService>();
 
         services.AddAuthentication()

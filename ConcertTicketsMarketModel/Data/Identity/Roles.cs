@@ -1,11 +1,9 @@
-﻿using Duende.IdentityServer.Validation;
-using System.Reflection;
-using Microsoft.AspNetCore.Identity;
-using System.Runtime.CompilerServices;
+﻿using System.Reflection;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ConcertTicketsMarketWebApp
+namespace ConcertTicketsMarketModel.Data.Identity
 {
     public static class Roles
     {
