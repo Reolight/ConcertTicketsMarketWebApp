@@ -2,6 +2,7 @@ using ConcertTicketsMarketWebApp.Data;
 using ConcertTicketsMarketWebApp.Areas.Identity.Data;
 using EmailService;
 using System.Reflection;
+using ConcertTicketsMarketModel.Data;
 
 namespace ConcertTicketsMarketWebApp
 {
@@ -25,10 +26,20 @@ namespace ConcertTicketsMarketWebApp
 
 
             builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-            builder.Services.AddMapsterConfigured();
+            builder.Services.AddMapsterConfiguration();
             
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -44,7 +55,7 @@ namespace ConcertTicketsMarketWebApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-
+            app.UseCors();
             app.UseIdentityServer();
             app.UseAuthentication();
             app.UseAuthorization();

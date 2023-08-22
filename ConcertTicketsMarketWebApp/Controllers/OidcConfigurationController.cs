@@ -19,9 +19,16 @@ public class OidcConfigurationController : Controller
     [HttpGet("_configuration/{clientId}")]
     public IActionResult GetClientRequestParameters([FromRoute] string clientId)
     {
-        var parameters = _clientRequestParametersProvider.GetClientParameters(HttpContext, clientId);
-        _logger.LogInformation("Client with Id {ClientId} issued OIDC configs. Next data was given: {Data}",
-            clientId, parameters);
-        return Ok(parameters);
+        try
+        {
+            var parameters = _clientRequestParametersProvider.GetClientParameters(HttpContext, clientId);
+            _logger.LogInformation("Client with Id {ClientId} issued OIDC configs. Next data was given: {Data}",
+                clientId, parameters);
+            return Ok(parameters);
+        }
+        catch
+        {
+            return BadRequest("You are not a client");
+        }
     }
 }
