@@ -4,6 +4,14 @@ import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
 import './NavMenu.css';
 
+// page links: text, role (undef, u, a), route;
+const pageLinks = [
+  { text: 'Concerts', route: '/'},
+  { text: 'Performers', route: '/performers'},
+  { text: 'User panel', role: 'a', route: '/users'},
+  { text: 'Discounts', role: 'a', route: '/discounts'}
+]
+
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
 
@@ -34,10 +42,10 @@ export class NavMenu extends Component {
                 <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/">Counter</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/performers">Fetch data</NavLink>
               </NavItem>
               <LoginMenu>
               </LoginMenu>
