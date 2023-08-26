@@ -7,7 +7,7 @@ namespace SorterByCriteria.DI;
 public static class DependencyInjection
 {
     public static IServiceCollection AddFiltersSortersPaginator<TContext>(this IServiceCollection services,
-        Action<FilterSorterPaginatorConfigurations>? configure)
+        Action<FilterSorterPaginatorConfigurations>? configure = null)
         where TContext : DbContext
     {
         services.Configure(configure ?? new Action<FilterSorterPaginatorConfigurations>(
@@ -20,7 +20,7 @@ public static class DependencyInjection
     }
 
     public static IServiceCollection AddFiltersSortersPaginatorForDeveloper<TContext>(this IServiceCollection services,
-        Action<FilterSorterPaginatorConfigurations>? configure)
+        Action<FilterSorterPaginatorConfigurations>? configure = null)
         where TContext : DbContext
     {
         services.Configure(configure ?? new Action<FilterSorterPaginatorConfigurations>(

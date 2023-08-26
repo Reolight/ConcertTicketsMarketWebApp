@@ -1,7 +1,11 @@
-﻿namespace SorterByCriteria;
+﻿using System.Text.Json.Serialization;
+
+namespace SorterByCriteria;
 
 public struct SortingCriterion
 {
-    public readonly string FieldName { get; init; }
-    public readonly bool IsAscending { get; init; }
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
+    [JsonPropertyName("isAsc")]
+    public bool IsAsc { get; set; }
 }

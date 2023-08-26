@@ -80,11 +80,9 @@ internal class QueryDeserializer
         Type genericFilter = typeof(SimpleFilter<>);
         Type[] typeArgs = { propType };
         Type constructedGenericFilterType = genericFilter.MakeGenericType(typeArgs);
-        var simpleFilter = Activator.CreateInstance(
-            constructedGenericFilterType,
-            propName,
-            filterPropertyValue.Name,
-            filterPropertyValue.Value.Deserialize(propType));
+        var simpleFilter = Activator.CreateInstance(constructedGenericFilterType) as ISimpleFilter
+            ?? throw new InvalidOperationException($"{constructedGenericFilterType} couldn't be constructed");
+        simpleFilter.Initialize(propName, filterPropertyValue.Name, filterPropertyValue.Value);
         return simpleFilter as FilterBase
                ?? throw new InvalidOperationException($"Something went wrong. Parsed: {property.ToString()}, gotten: ");
     }

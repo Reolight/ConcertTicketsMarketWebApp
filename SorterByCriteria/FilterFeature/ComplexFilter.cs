@@ -5,7 +5,7 @@ using SorterByCriteria.FilterFeature.Enums;
 
 namespace SorterByCriteria.FilterFeature;
 
-internal class ComplexFilter : FilterBase
+public class ComplexFilter : FilterBase
 {
     public ConjunctionType Conjunction { get; set; }
     public List<FilterBase> Filters { get; set; } = null!;

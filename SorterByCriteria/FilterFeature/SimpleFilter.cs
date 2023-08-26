@@ -1,16 +1,17 @@
 ﻿// ReSharper disable NullableWarningSuppressionIsUsed
 
 using System.Linq.Expressions;
+using System.Text.Json;
 using SorterByCriteria.FilterFeature.Enums;
 
 namespace SorterByCriteria.FilterFeature;
 
-internal class SimpleFilter<T> : FilterBase
+public class SimpleFilter<T> : FilterBase, ISimpleFilter
 {
     public string PropertyName = String.Empty;
     public CompareExpression<T> CompareExpression = null!;
     
-    internal SimpleFilter() { }
+    public SimpleFilter() { }
 
     internal SimpleFilter(string propertyName, T value, string compareType)
     {
@@ -32,5 +33,15 @@ internal class SimpleFilter<T> : FilterBase
             )
             , parameter);
         return Expression;
+    }
+
+    void ISimpleFilter.Initialize(string propertyName, string compareExpr, JsonElement value)
+    {
+        PropertyName = propertyName;
+        CompareExpression = new CompareExpression<T>
+        {
+            Value = (T)value.Deserialize(typeof(T))!,
+            CompareType = CompareConverter.ToCompareType(compareExpr)
+        };
     }
 }

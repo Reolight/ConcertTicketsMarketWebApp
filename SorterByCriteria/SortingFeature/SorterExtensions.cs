@@ -23,13 +23,13 @@ internal static class SorterExtensions
         {
             criterion = criteria[index];
             if (index == 0)
-                ordered = criterion.IsAscending
-                    ? queryable.OrderBy(t => EF.Property<object>(t, criterion.FieldName))
-                    : queryable.OrderByDescending(t => EF.Property<object>(t, criterion.FieldName));
+                ordered = criterion.IsAsc
+                    ? queryable.OrderBy(t => EF.Property<object>(t, criterion.Name))
+                    : queryable.OrderByDescending(t => EF.Property<object>(t, criterion.Name));
             else
-                ordered = criterion.IsAscending
-                    ? ordered.ThenBy(t => EF.Property<object>(t, criterion.FieldName))
-                    : ordered.ThenByDescending(t => EF.Property<object>(t, criterion.FieldName));
+                ordered = criterion.IsAsc
+                    ? ordered.ThenBy(t => EF.Property<object>(t, criterion.Name))
+                    : ordered.ThenByDescending(t => EF.Property<object>(t, criterion.Name));
         }
 
         return ordered;

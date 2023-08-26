@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Options;
 using SorterByCriteria.Attributes;
 using SorterByCriteria.DI;
@@ -12,21 +13,16 @@ public class TypeResolver<TContext> : ITypeResolver
 
     public TypeResolver(IOptions<FilterSorterPaginatorConfigurations> configurations)
     {
-        switch (configurations.Value.ReflectOver)
-        {
-            case InspectionType.Properties:
-                GetObjectDescriptors(typeof(TContext));
-                break;
-            case InspectionType.Attributes:
-                GetDescriptorsWithAttributes(typeof(TContext));
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+        ExtractSuitableTypes(typeof(TContext), configurations.Value.ReflectOver)
+            .AsParallel()
+            .ForAll(suitableType => GetObjectDescriptors(suitableType, configurations.Value.ReflectOver));
     }
 
     public Type GetTypeOfProperty(string @object, string property)
     {
+        @object = @object.ToLowerInvariant();
+        property = property.ToLowerInvariant();
+        
         if (!_objectDescriptors.TryGetValue(@object, out var issuedDescriptor)
             || issuedDescriptor is not { } descriptor)
             throw new NullReferenceException($"There is no descriptor for object {@object}");
@@ -38,33 +34,41 @@ public class TypeResolver<TContext> : ITypeResolver
         return propertyDescriptor;
     }
 
-    private void GetObjectDescriptors(Type dbToInspect)
+    private IEnumerable<FieldInfo> ExtractSuitableFields(Type typeToExtractFrom, InspectionType inspectionType) =>
+        typeToExtractFrom.GetRuntimeFields()
+            .Where(info => inspectionType switch
+            {
+                InspectionType.Properties =>
+                    info.GetCustomAttribute<IgnoreDescriptionAttribute>() is null,
+                InspectionType.Attributes =>
+                    info.GetCustomAttribute<UseDescriptionAttribute>() is not null,
+                _ => throw new ArgumentOutOfRangeException(nameof(inspectionType), inspectionType, null)
+            });
+
+
+    private List<Type> ExtractSuitableTypes(Type typeToExtractFrom, InspectionType inspectionType) =>
+        ExtractSuitableFields(typeToExtractFrom, inspectionType)
+            .Select(info => info.FieldType)
+            .Where(type => type.IsGenericType)
+            .Select(type => type.GenericTypeArguments.First())
+            .ToList();
+
+    private readonly Regex _nameExtractor = new Regex("(?<=<)\\w+(?=>)");
+    private void GetObjectDescriptors(Type toInspect, InspectionType inspectionType)
     {
-        var objectName = dbToInspect.Name;
+        var objectName = toInspect.Name.ToLowerInvariant();
         _objectDescriptors.GetOrAdd(
             objectName,
             objName =>
             {
-                var propsDescriptors = dbToInspect
-                    .GetFields(BindingFlags.Public | BindingFlags.GetProperty)
-                    .Where(info => info.GetCustomAttribute<IgnoreDescriptionAttribute>() is null)
-                    .Select(info => new KeyValuePair<string, Type>(info.Name, info.FieldType));
+                var propsDescriptors = ExtractSuitableFields(toInspect, inspectionType)
+                    .Select(info =>
+                    {
+                        var match = _nameExtractor.Match(info.Name);
+                        var name = match.Success ? match.Value : info.Name;
+                        return new KeyValuePair<string, Type>(name.ToLowerInvariant(), info.FieldType);
+                    });
                 return new ConcurrentDictionary<string, Type>(propsDescriptors);
             });
-    }
-
-    private void GetDescriptorsWithAttributes(Type dbToInspect)
-    {
-        var objectName = dbToInspect.Name;
-        _objectDescriptors.GetOrAdd(
-            objectName,
-            objName =>
-                new ConcurrentDictionary<string, Type>(
-                    dbToInspect
-                        .GetFields(BindingFlags.Public | BindingFlags.GetProperty)
-                        .Where(info => info.GetCustomAttribute<UseDescriptionAttribute>() is not null)
-                        .Select(info => new KeyValuePair<string, Type>(info.Name, info.FieldType))
-                )
-            );
     }
 }

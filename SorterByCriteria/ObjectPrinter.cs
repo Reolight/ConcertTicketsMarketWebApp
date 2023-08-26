@@ -3,9 +3,13 @@ using System.Text;
 
 namespace SorterByCriteria;
 
-internal static class ObjectLogger {
-    
-    internal static string GetPropertyDescriptor(object? @object, Tabulation? tabs = null)
+public static class ObjectLogger {
+    public static string GetStringedObjectFields(object? @object)
+        => GetPropertyDescriptor(@object);
+
+    public static string LogObject(this object? obj)
+        => GetPropertyDescriptor(obj);
+    private static string GetPropertyDescriptor(object? @object, Tabulation? tabs = null)
     {
         tabs ??= new Tabulation();
         StringBuilder builder = new StringBuilder();
@@ -14,7 +18,7 @@ internal static class ObjectLogger {
         var objType = obj.GetType();
         builder.Append($"{objType.Name} {{\n");
         tabs++;
-        foreach (var field in objType.GetFields(BindingFlags.Public))
+        foreach (var field in objType.GetFields())
         {
             builder.Append(new string('\t', tabs) + $"\"{field.Name}\": \"{GetValue(@object, field, tabs)};\n");
         }
