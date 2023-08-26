@@ -20,11 +20,16 @@ internal class QueryDeserializer
         return query;
     }
 
+    private int ParseInt32(in JsonDocument document, in string propertyName) =>
+        !document.RootElement.TryGetProperty(propertyName, out var property) ? 
+            0 :
+            property.GetInt32();
+
     private void ParseBasicProperties<T>(in JsonDocument document, AdvancedQuery query)
     {
-        query.Page = document.RootElement.GetProperty("page").GetInt32();
-        query.Count = document.RootElement.GetProperty("count").GetInt32();
-
+        query.Page = ParseInt32(document, "page");
+        query.Count = ParseInt32(document, "count");
+        
         if (document.RootElement.TryGetProperty("sorting", out var sortingElement) &&
             sortingElement is { ValueKind: JsonValueKind.Array })
         {
@@ -33,6 +38,7 @@ internal class QueryDeserializer
 
         if (!document.RootElement.TryGetProperty("filters", out var filterElement) ||
             filterElement is not { ValueKind: JsonValueKind.Object }) return;
+        
         // There is only one property can be at the top level!
         var filterProp = filterElement.EnumerateObject().First();
         ParseFilterCriteria<T>(filterProp, query);

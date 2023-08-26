@@ -18,5 +18,5 @@ public interface IFilterSorterPaginatorService
     /// <param name="jsonQuery">JSON string with criteria came from another service</param>
     /// <typeparam name="T">Type of object</typeparam>
     /// <returns>Tuple: first value is IEnumerable with result data, second value defines maximum pages with those filters</returns>
-    public (IEnumerable<T> resultData, int maxPages) GetFilteredSortedPaginatedData<T>(IQueryable<T> queryable, string jsonQuery);
+    public (IEnumerable<T> ResultData, int MaxPages) GetFilteredSortedPaginatedData<T>(IQueryable<T> queryable, string jsonQuery);
 }
