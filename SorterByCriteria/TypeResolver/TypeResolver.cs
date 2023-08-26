@@ -1,12 +1,29 @@
 ﻿using System.Collections.Concurrent;
 using System.Reflection;
+using Microsoft.Extensions.Options;
 using SorterByCriteria.Attributes;
+using SorterByCriteria.DI;
 
 namespace SorterByCriteria.TypeResolver;
 
-public class Resolver
+public class TypeResolver<TContext> : ITypeResolver
 {
     private readonly ConcurrentDictionary<string, ConcurrentDictionary<string, Type>?> _objectDescriptors = new();
+
+    public TypeResolver(IOptions<FilterSorterPaginatorConfigurations> configurations)
+    {
+        switch (configurations.Value.ReflectOver)
+        {
+            case InspectionType.Properties:
+                GetObjectDescriptors(typeof(TContext));
+                break;
+            case InspectionType.Attributes:
+                GetDescriptorsWithAttributes(typeof(TContext));
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
 
     public Type GetTypeOfProperty(string @object, string property)
     {
@@ -21,31 +38,29 @@ public class Resolver
         return propertyDescriptor;
     }
 
-    public void GetObjectDescriptors(object toInspect)
+    private void GetObjectDescriptors(Type dbToInspect)
     {
-        var objectName = toInspect.GetType().Name;
+        var objectName = dbToInspect.Name;
         _objectDescriptors.GetOrAdd(
             objectName,
             objName =>
             {
-                var propsDescriptors = toInspect
-                    .GetType()
+                var propsDescriptors = dbToInspect
                     .GetFields(BindingFlags.Public | BindingFlags.GetProperty)
                     .Where(info => info.GetCustomAttribute<IgnoreDescriptionAttribute>() is null)
                     .Select(info => new KeyValuePair<string, Type>(info.Name, info.FieldType));
                 return new ConcurrentDictionary<string, Type>(propsDescriptors);
             });
     }
-    
-    public void GetDescriptorsWithAttributes(object toInspect)
+
+    private void GetDescriptorsWithAttributes(Type dbToInspect)
     {
-        var objectName = toInspect.GetType().Name;
+        var objectName = dbToInspect.Name;
         _objectDescriptors.GetOrAdd(
             objectName,
             objName =>
                 new ConcurrentDictionary<string, Type>(
-                    toInspect
-                        .GetType()
+                    dbToInspect
                         .GetFields(BindingFlags.Public | BindingFlags.GetProperty)
                         .Where(info => info.GetCustomAttribute<UseDescriptionAttribute>() is not null)
                         .Select(info => new KeyValuePair<string, Type>(info.Name, info.FieldType))

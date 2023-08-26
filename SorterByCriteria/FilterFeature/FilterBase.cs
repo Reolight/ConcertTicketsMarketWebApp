@@ -2,7 +2,7 @@
 
 namespace SorterByCriteria.FilterFeature;
 
-public abstract class FilterBase
+internal abstract class FilterBase
 {
     internal Expression? Expression = null;
     

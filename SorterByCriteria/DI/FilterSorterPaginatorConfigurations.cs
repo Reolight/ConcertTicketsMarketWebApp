@@ -1,11 +1,10 @@
 ﻿// ReSharper disable NullableWarningSuppressionIsUsed
 
-using Microsoft.EntityFrameworkCore;
-
 namespace SorterByCriteria.DI;
 
-public class ReolightFilterConfigurations
+public class FilterSorterPaginatorConfigurations
 {
     public InspectionType ReflectOver { get; set; }
-    public DbContext ReflectOn { get; set; } = null!;
+
+    public int DefaultCountOfElementsOnPage { get; set; } = 20;
 }

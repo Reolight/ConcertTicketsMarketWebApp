@@ -5,10 +5,10 @@ using SorterByCriteria.FilterFeature.Enums;
 
 namespace SorterByCriteria.FilterFeature;
 
-public class CompoundFilter : FilterBase
+internal class ComplexFilter : FilterBase
 {
     public ConjunctionType Conjunction { get; set; }
-    public FilterBase[] Filters { get; set; } = null!;
+    public List<FilterBase> Filters { get; set; } = null!;
     
     internal override Expression BuildFilter()
     {

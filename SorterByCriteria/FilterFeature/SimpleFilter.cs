@@ -5,11 +5,23 @@ using SorterByCriteria.FilterFeature.Enums;
 
 namespace SorterByCriteria.FilterFeature;
 
-public class SimpleFilter<T> : FilterBase
+internal class SimpleFilter<T> : FilterBase
 {
     public string PropertyName = String.Empty;
     public CompareExpression<T> CompareExpression = null!;
     
+    internal SimpleFilter() { }
+
+    internal SimpleFilter(string propertyName, T value, string compareType)
+    {
+        PropertyName = propertyName;
+        CompareExpression = new CompareExpression<T>
+        {
+            Value = value,
+            CompareType = CompareConverter.ToCompareType(compareType)
+        };
+    }
+
     internal override Expression BuildFilter()
     {
         var parameter = Expression.Parameter(typeof(T), "obj");

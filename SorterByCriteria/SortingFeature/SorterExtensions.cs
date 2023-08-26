@@ -2,7 +2,7 @@
 
 namespace SorterByCriteria;
 
-public static class Extensions
+internal static class SorterExtensions
 {
     /// <summary>
     /// This extension method sorts collection according to passed criteria. It works slower then usual
@@ -13,7 +13,7 @@ public static class Extensions
     /// <param name="criteria">Criteria collection</param>
     /// <typeparam name="T">The type of underlying sorting collection</typeparam>
     /// <returns>IOrderedQueryable sorted by criteria</returns>
-    public static IOrderedQueryable<T> SortByCriteria<T>(
+    internal static IOrderedQueryable<T> SortByCriteria<T>(
         this IQueryable<T> queryable,
         List<SortingCriterion> criteria)
     {

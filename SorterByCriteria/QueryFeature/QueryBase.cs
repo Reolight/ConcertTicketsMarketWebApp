@@ -2,7 +2,7 @@
 
 public class QueryBase
 {
-    public int Page = 1;
-    public int Count = 10;
-    public List<SortingCriterion> Sorting = new();
+    public int Page { get; set; }  = 0;
+    public int Count { get; set; }= 0;
+    public List<SortingCriterion> Sorting { get; set; }= new();
 }
