@@ -8,7 +8,7 @@ namespace SorterByCriteria.FilterFeature;
 public class ComplexFilter : FilterBase
 {
     public ConjunctionType Conjunction { get; set; }
-    public List<FilterBase> Filters { get; set; } = null!;
+    public List<FilterBase> Filters { get; set; } = new();
     
     internal override Expression BuildFilter()
     {

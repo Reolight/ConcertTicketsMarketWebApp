@@ -17,11 +17,11 @@ internal static class SorterExtensions
         this IQueryable<T> queryable,
         List<SortingCriterion> criteria)
     {
+        // ReSharper disable once NullableWarningSuppressionIsUsed
         IOrderedQueryable<T> ordered = null!;
-        SortingCriterion criterion;
         for (int index = 0; index < criteria.Count; index++)
         {
-            criterion = criteria[index];
+            var criterion = criteria[index];
             if (index == 0)
                 ordered = criterion.IsAsc
                     ? queryable.OrderBy(t => EF.Property<object>(t, criterion.Name))

@@ -26,27 +26,6 @@ public class FilterSorterPaginatorService<TContext> : IFspDeveloper
     private IQueryable<T> FilterAndSortIQueryable<T>(IQueryable<T> queryable, in AdvancedQueryBuilt<T> queryBuilt) => 
         ApplyFilters(queryable, queryBuilt).SortByCriteria(queryBuilt.Sorting);
 
-    public IQueryable<T> GetFilteredSortedData<T>(IQueryable<T> queryable, string jsonQuery)
-    {
-        var queryBuilt = ParseQuery<T>(jsonQuery).BuildQuery<T>();
-        return FilterAndSortIQueryable(queryable, queryBuilt);
-    }
-
-    public (IEnumerable<T> ResultData, int MaxPages) GetFilteredSortedPaginatedData<T>(IQueryable<T> queryable, string jsonQuery)
-    {
-        var queryBuilt = ParseQuery<T>(jsonQuery).BuildQuery<T>();
-        queryable = FilterAndSortIQueryable(queryable, queryBuilt);
-        if (queryBuilt.Count == 0)
-        {
-            _logger.LogWarning("Count of elements on page is 0. Default count ({DefaultCount}) will be used",
-                _sorterPaginatorConfigurations.DefaultCountOfElementsOnPage);
-            queryBuilt.Count = _sorterPaginatorConfigurations.DefaultCountOfElementsOnPage;
-        }
-
-        return (queryable.Skip(queryBuilt.Page * queryBuilt.Count).Take(queryBuilt.Count).AsEnumerable(),
-                (int)Math.Ceiling(queryable.Count() / (double)queryBuilt.Count));
-    }
-
     public AdvancedQuery ParseQuery<T>(string jsonQuery)
     {
         QueryDeserializer deserializer = new(_typeResolver);
@@ -84,4 +63,17 @@ public class FilterSorterPaginatorService<TContext> : IFspDeveloper
     public (IEnumerable<T> ResultData, int MaxPages) ApplyPagination<T>(IQueryable<T> queryable,
         AdvancedQueryBuilt<T> queryBuilt)
         => ApplyPagination(queryable, queryBuilt.Page, queryBuilt.Count);
+    
+    public IQueryable<T> GetFilteredSortedData<T>(IQueryable<T> queryable, string jsonQuery)
+    {
+        var queryBuilt = ParseQuery<T>(jsonQuery).BuildQuery<T>();
+        return FilterAndSortIQueryable(queryable, queryBuilt);
+    }
+
+    public (IEnumerable<T> ResultData, int MaxPages) GetFilteredSortedPaginatedData<T>(IQueryable<T> queryable, string jsonQuery)
+    {
+        var queryBuilt = ParseQuery<T>(jsonQuery).BuildQuery<T>();
+        queryable = FilterAndSortIQueryable(queryable, queryBuilt);
+        return ApplyPagination(queryable, queryBuilt.Page, queryBuilt.Count);
+    }
 }
