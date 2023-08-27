@@ -6,5 +6,5 @@ public abstract class FilterBase
 {
     internal Expression? Expression = null;
     
-    internal abstract Expression BuildFilter();
+    internal abstract Expression BuildFilter<TObject>();
 }

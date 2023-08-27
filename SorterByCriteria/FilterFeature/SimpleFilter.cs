@@ -6,30 +6,32 @@ using SorterByCriteria.FilterFeature.Enums;
 
 namespace SorterByCriteria.FilterFeature;
 
-public class SimpleFilter<T> : FilterBase, ISimpleFilter
+public class SimpleFilter<TProperty> : FilterBase, ISimpleFilter
 {
     public string PropertyName = String.Empty;
-    public CompareExpression<T> CompareExpression = null!;
+    public CompareExpression<TProperty> CompareExpression = null!;
     
     public SimpleFilter() { }
 
-    internal SimpleFilter(string propertyName, T value, string compareType)
+    internal SimpleFilter(string propertyName, TProperty value, string compareType)
     {
         PropertyName = propertyName;
-        CompareExpression = new CompareExpression<T>
+        CompareExpression = new CompareExpression<TProperty>
         {
             Value = value,
             CompareType = CompareConverter.ToCompareType(compareType)
         };
     }
 
-    internal override Expression BuildFilter()
+    internal override Expression BuildFilter<TObject>()
     {
-        var parameter = Expression.Parameter(typeof(T), "obj");
-        base.Expression = Expression.Lambda<Func<T, bool>>(
+        var parameter = Expression.Parameter(typeof(TProperty), "obj");
+        var property = Expression.Property(parameter, PropertyName);
+        var constant = Expression.Constant(CompareExpression.Value, typeof(TProperty));
+        base.Expression = Expression.Lambda<Func<TProperty, bool>>(
             CompareExpression.CompareType.ToBinaryExpression(
-                Expression.Property(parameter, PropertyName),
-                Expression.Constant(CompareExpression.Value, typeof(T))
+                property,
+                constant
             )
             , parameter);
         return Expression;
@@ -38,9 +40,9 @@ public class SimpleFilter<T> : FilterBase, ISimpleFilter
     void ISimpleFilter.Initialize(string propertyName, string compareExpr, JsonElement value)
     {
         PropertyName = propertyName;
-        CompareExpression = new CompareExpression<T>
+        CompareExpression = new CompareExpression<TProperty>
         {
-            Value = (T)value.Deserialize(typeof(T))!,
+            Value = (TProperty)value.Deserialize(typeof(TProperty))!,
             CompareType = CompareConverter.ToCompareType(compareExpr)
         };
     }

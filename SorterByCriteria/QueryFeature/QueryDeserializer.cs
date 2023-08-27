@@ -12,11 +12,11 @@ internal class QueryDeserializer
     internal QueryDeserializer(ITypeResolver typeResolver)
         => _typeResolver = typeResolver;
     
-    internal AdvancedQuery Deserialize<T>(string json)
+    internal AdvancedQuery<TObject> Deserialize<TObject>(string json)
     {
-        AdvancedQuery query = new AdvancedQuery();
+        AdvancedQuery<TObject> query = new AdvancedQuery<TObject>();
         using var document = JsonDocument.Parse(json);
-        ParseBasicProperties<T>(document, query);
+        ParseBasicProperties(document, query);
         return query;
     }
 
@@ -25,11 +25,11 @@ internal class QueryDeserializer
             0 :
             property.GetInt32();
 
-    private void ParseBasicProperties<T>(in JsonDocument document, AdvancedQuery query)
+    private void ParseBasicProperties<TObject>(in JsonDocument document, AdvancedQuery<TObject> query)
     {
         query.Page = ParseInt32(document, "page");
         query.Count = ParseInt32(document, "count");
-        
+
         if (document.RootElement.TryGetProperty("sorting", out var sortingElement) &&
             sortingElement is { ValueKind: JsonValueKind.Array })
         {
@@ -41,38 +41,38 @@ internal class QueryDeserializer
         
         // There is only one property can be at the top level!
         var filterProp = filterElement.EnumerateObject().First();
-        ParseFilterCriteria<T>(filterProp, query);
+        ParseFilterCriteria<TObject>(filterProp, query);
     }
 
-    private void ParseFilterCriteria<T>(in JsonProperty filterProperty, AdvancedQuery query, FilterBase? currentFilter = null)
+    private void ParseFilterCriteria<TObject>(in JsonProperty filterProperty, AdvancedQuery<TObject> query, FilterBase? currentFilter = null)
     {
         var createdFilter = IsComplexFilter(filterProperty) ?
-            CreateComplexFilter<T>(filterProperty) :
-            CreateSimpleFilter<T>(filterProperty);
+            CreateComplexFilter<TObject>(filterProperty) :
+            CreateSimpleFilter<TObject>(filterProperty);
         query.Filters = createdFilter;
     }
     
     private bool IsComplexFilter(in JsonProperty filterProperty) => 
         filterProperty is { Name: "and" or "or" };
 
-    private FilterBase CreateComplexFilter<T>(in JsonProperty property, ComplexFilter? complexFilter = null)
+    private FilterBase CreateComplexFilter<TObject>(in JsonProperty property, ComplexFilter? complexFilter = null)
     {
         complexFilter ??= new ComplexFilter { Conjunction = ConjunctionConverter.ToConjunctionType(property.Name) };
         foreach (var prop in property.Value.EnumerateArray()
                      .Select(jsonObj => jsonObj.EnumerateObject().First()))
         {
             complexFilter.Filters.Add(IsComplexFilter(prop)?
-                CreateComplexFilter<T>(prop, complexFilter) :
-                CreateSimpleFilter<T>(prop));
+                CreateComplexFilter<TObject>(prop, complexFilter) :
+                CreateSimpleFilter<TObject>(prop));
         }
 
         return complexFilter;
     }
 
-    private FilterBase CreateSimpleFilter<T>(in JsonProperty property)
+    private FilterBase CreateSimpleFilter<TObject>(in JsonProperty property)
     {
         var propName = property.Name;
-        var propType = _typeResolver.GetTypeOfProperty(typeof(T).Name, propName);
+        var propType = _typeResolver.GetTypeOfProperty(typeof(TObject).Name, propName);
         if (property.Value is not { ValueKind: JsonValueKind.Object } value)
             throw new InvalidOperationException("Couldn't interpret not simple filter, cuz it has unknown format");
         
@@ -83,11 +83,12 @@ internal class QueryDeserializer
         var simpleFilter = Activator.CreateInstance(constructedGenericFilterType) as ISimpleFilter
             ?? throw new InvalidOperationException($"{constructedGenericFilterType} couldn't be constructed");
         simpleFilter.Initialize(propName, filterPropertyValue.Name, filterPropertyValue.Value);
+
         return simpleFilter as FilterBase
                ?? throw new InvalidOperationException($"Something went wrong. Parsed: {property.ToString()}, gotten: ");
     }
 
-    private void ParseSortingCriteria(in JsonElement array, AdvancedQuery query)
+    private void ParseSortingCriteria<TObject>(in JsonElement array, AdvancedQuery<TObject> query)
     {
         query.Sorting = array.Deserialize<List<SortingCriterion>>()
                         ?? throw new InvalidOperationException();

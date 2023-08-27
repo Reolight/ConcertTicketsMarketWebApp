@@ -2,7 +2,7 @@
 
 namespace SorterByCriteria.QueryFeature;
 
-public class AdvancedQuery : QueryBase
+public class AdvancedQuery<TObject> : QueryBase<TObject>
 {
     public FilterBase? Filters = null;
 }

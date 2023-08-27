@@ -2,7 +2,7 @@
 
 namespace SorterByCriteria.QueryFeature;
 
-public class AdvancedQueryBuilt<T> : QueryBase
+public class AdvancedQueryBuilt<TObject> : QueryBase<TObject>
 {
-    public Expression<Func<T, bool>>? Filters = null;
+    public Expression<Func<TObject, bool>>? Filters = null;
 }

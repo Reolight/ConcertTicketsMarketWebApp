@@ -4,11 +4,11 @@ namespace SorterByCriteria;
 
 public interface IFspDeveloper : IFilterSorterPaginatorService
 {
-    public AdvancedQuery ParseQuery<T>(string jsonQuery);
-    public AdvancedQueryBuilt<T> BuildQuery<T>(AdvancedQuery query);
-    public IQueryable<T> ApplyFilters<T>(IQueryable<T> queryable, AdvancedQueryBuilt<T> queryBuilt);
-    public IQueryable<T> ApplySorting<T>(IQueryable<T> queryable, AdvancedQuery query);
-    public IQueryable<T> ApplySorting<T>(IQueryable<T> queryable, AdvancedQueryBuilt<T> queryBuilt);
-    public (IEnumerable<T> ResultData, int MaxPages) ApplyPagination<T>(IQueryable<T> queryable, AdvancedQuery query);
-    public (IEnumerable<T> ResultData, int MaxPages) ApplyPagination<T>(IQueryable<T> queryable, AdvancedQueryBuilt<T> queryBuilt);
+    public AdvancedQuery<TObject> ParseQuery<TObject>(string jsonQuery);
+    public AdvancedQueryBuilt<TObject> BuildQuery<TObject>(AdvancedQuery<TObject> query);
+    public IQueryable<TObject> ApplyFilters<TObject>(IQueryable<TObject> queryable, AdvancedQueryBuilt<TObject> queryBuilt);
+    public IQueryable<TObject> ApplySorting<TObject>(IQueryable<TObject> queryable, AdvancedQuery<TObject> query);
+    public IQueryable<TObject> ApplySorting<TObject>(IQueryable<TObject> queryable, AdvancedQueryBuilt<TObject> queryBuilt);
+    public (IEnumerable<TObject> ResultData, int MaxPages) ApplyPagination<TObject>(IQueryable<TObject> queryable, AdvancedQuery<TObject> query);
+    public (IEnumerable<TObject> ResultData, int MaxPages) ApplyPagination<TObject>(IQueryable<TObject> queryable, AdvancedQueryBuilt<TObject> queryBuilt);
 }
