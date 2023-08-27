@@ -10,14 +10,14 @@ public class ComplexFilter : FilterBase
     public ConjunctionType Conjunction { get; set; }
     public List<FilterBase> Filters { get; set; } = new();
     
-    internal override Expression BuildFilter<TObject>()
+    internal override Expression BuildFilter<TObject>(ParameterExpression parameter)
     {
         Filters.Aggregate(
             Expression,
             (expression, filter) =>
                 Expression = Expression == null
-                    ? filter.BuildFilter<TObject>()
-                    : Conjunction.ToConjunctionExpression(expression!, filter.BuildFilter<TObject>())
+                    ? filter.BuildFilter<TObject>(parameter)
+                    : Conjunction.ToConjunctionExpression(expression!, filter.BuildFilter<TObject>(parameter))
         );
 
         return Expression!;

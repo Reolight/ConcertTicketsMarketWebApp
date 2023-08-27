@@ -23,17 +23,14 @@ public class SimpleFilter<TProperty> : FilterBase, ISimpleFilter
         };
     }
 
-    internal override Expression BuildFilter<TObject>()
+    internal override Expression BuildFilter<TObject>(ParameterExpression parameter)
     {
-        var parameter = Expression.Parameter(typeof(TProperty), "obj");
         var property = Expression.Property(parameter, PropertyName);
         var constant = Expression.Constant(CompareExpression.Value, typeof(TProperty));
-        base.Expression = Expression.Lambda<Func<TProperty, bool>>(
-            CompareExpression.CompareType.ToBinaryExpression(
+        Expression = CompareExpression.CompareType.ToBinaryExpression(
                 property,
                 constant
-            )
-            , parameter);
+            );
         return Expression;
     }
 
