@@ -13,7 +13,7 @@ internal static class SorterExtensions
     /// <param name="criteria">Criteria collection</param>
     /// <typeparam name="T">The type of underlying sorting collection</typeparam>
     /// <returns>IOrderedQueryable sorted by criteria</returns>
-    internal static IOrderedQueryable<T> SortByCriteria<T>(
+    internal static IQueryable<T> SortByCriteria<T>(
         this IQueryable<T> queryable,
         List<SortingCriterion> criteria)
     {
@@ -32,6 +32,6 @@ internal static class SorterExtensions
                     : ordered.ThenByDescending(t => EF.Property<object>(t, criterion.Name));
         }
 
-        return ordered;
+        return ordered ?? queryable;
     }
 }

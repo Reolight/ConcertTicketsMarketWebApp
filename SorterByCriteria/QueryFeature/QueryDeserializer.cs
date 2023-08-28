@@ -56,7 +56,7 @@ internal class QueryDeserializer
 
     private FilterBase CreateComplexFilter<TObject>(in JsonProperty property)
     {
-        var complexFilter = new ComplexFilter { Conjunction = ConjunctionConverter.ToConjunctionType(property.Name) };
+        var complexFilter = new ComplexFilter { Conjunction = ConjunctionConverter.ToConjunctionType(property.Name) };  
         foreach (var prop in property.Value.EnumerateArray()
                      .Select(jsonObj => jsonObj.EnumerateObject().First()))
         {

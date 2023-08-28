@@ -31,8 +31,8 @@ public partial class FilterSorterPaginatorService<TContext>
         if (count == 0)
         {
             _logger.LogWarning("Count of elements on page is 0. Default count ({DefaultCount}) will be used",
-                _sorterPaginatorConfigurations.DefaultCountOfElementsOnPage);
-            count = _sorterPaginatorConfigurations.DefaultCountOfElementsOnPage;
+                _sorterPaginatorConfigurations.CountOfElementsOnPage);
+            count = _sorterPaginatorConfigurations.CountOfElementsOnPage;
         }
 
         return (queryable.Skip(page * count).Take(count).AsEnumerable(),

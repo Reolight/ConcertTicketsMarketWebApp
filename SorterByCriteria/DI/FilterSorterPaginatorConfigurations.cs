@@ -4,7 +4,9 @@ namespace SorterByCriteria.DI;
 
 public class FilterSorterPaginatorConfigurations
 {
-    public InspectionType ReflectOver { get; set; }
+    public static readonly int DefaultCountOfElementsOnPage = 20;
+    public static readonly InspectionType DefaultReflectOver = InspectionType.Properties;
+    public InspectionType ReflectOver { get; set; } = DefaultReflectOver;
 
-    public int DefaultCountOfElementsOnPage { get; set; } = 20;
+    public int CountOfElementsOnPage { get; set; } = DefaultCountOfElementsOnPage;
 }
