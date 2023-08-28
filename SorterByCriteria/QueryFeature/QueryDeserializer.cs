@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using SorterByCriteria.FilterFeature;
-using SorterByCriteria.FilterFeature.Enums;
 using SorterByCriteria.TypeResolver;
 
 namespace SorterByCriteria.QueryFeature;
@@ -41,7 +40,7 @@ internal class QueryDeserializer
         
         // There is only one property can be at the top level!
         var filterProp = filterElement.EnumerateObject().First();
-        ParseFilterCriteria<TObject>(filterProp, query);
+        ParseFilterCriteria(filterProp, query);
     }
 
     private void ParseFilterCriteria<TObject>(in JsonProperty filterProperty, AdvancedQuery<TObject> query, FilterBase? currentFilter = null)
@@ -55,14 +54,14 @@ internal class QueryDeserializer
     private bool IsComplexFilter(in JsonProperty filterProperty) => 
         filterProperty is { Name: "and" or "or" };
 
-    private FilterBase CreateComplexFilter<TObject>(in JsonProperty property, ComplexFilter? complexFilter = null)
+    private FilterBase CreateComplexFilter<TObject>(in JsonProperty property)
     {
-        complexFilter ??= new ComplexFilter { Conjunction = ConjunctionConverter.ToConjunctionType(property.Name) };
+        var complexFilter = new ComplexFilter { Conjunction = ConjunctionConverter.ToConjunctionType(property.Name) };
         foreach (var prop in property.Value.EnumerateArray()
                      .Select(jsonObj => jsonObj.EnumerateObject().First()))
         {
             complexFilter.Filters.Add(IsComplexFilter(prop)?
-                CreateComplexFilter<TObject>(prop, complexFilter) :
+                CreateComplexFilter<TObject>(prop) :
                 CreateSimpleFilter<TObject>(prop));
         }
 
