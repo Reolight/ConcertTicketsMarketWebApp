@@ -13,6 +13,8 @@ public partial class FilterSorterPaginatorService<TContext> : IFspDeveloper
     private readonly ILogger<FilterSorterPaginatorService<TContext>> _logger;
     private readonly FilterSorterPaginatorConfigurations _sorterPaginatorConfigurations;
 
+    private QueryBase? _cachedQuery = null;
+    private string? _cachedJson = null;
     public FilterSorterPaginatorService(
         TypeResolver<TContext> typeResolver,
         ILogger<FilterSorterPaginatorService<TContext>> logger,
@@ -23,6 +25,9 @@ public partial class FilterSorterPaginatorService<TContext> : IFspDeveloper
         _sorterPaginatorConfigurations = configurations.Value;
     }
 
+    public void ConsumeJsonQuery(string jsonQuery)
+        => _cachedJson = jsonQuery;
+    
     private IQueryable<TObject> FilterAndSortIQueryable<TObject>(IQueryable<TObject> queryable, in AdvancedQueryBuilt<TObject> queryBuilt) => 
         ApplyFilters(queryable, queryBuilt).SortByCriteria(queryBuilt.Sorting);
 
@@ -37,5 +42,15 @@ public partial class FilterSorterPaginatorService<TContext> : IFspDeveloper
         var queryBuilt = ParseQuery<TObject>(jsonQuery).BuildQuery();
         queryable = FilterAndSortIQueryable(queryable, queryBuilt);
         return ApplyPagination(queryable, queryBuilt.Page, queryBuilt.Count);
+    }
+
+    public IQueryable<TObject> ApplyFilters<TObject>(IQueryable<TObject> queryable)
+    {
+        return ApplyFilters(queryable, null);
+    }
+
+    public IQueryable<TObject> ApplySorting<TObject>(IQueryable<TObject> queryable)
+    {
+        return ApplySorting(queryable, null);
     }
 }

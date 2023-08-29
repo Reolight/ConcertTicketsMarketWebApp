@@ -1,9 +1,11 @@
 using System.Reflection;
 using ConcertTicketsMarketModel;
+using ConcertTicketsMarketModel.Data;
 using ConcertTicketsMarketModel.Data.Identity;
 using ConcertTicketsMarketWebApp;
 using EmailService;
 using Mapster;
+using SorterByCriteria.DI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,13 @@ builder.Services.AddTransient<IEmailService, EmailService.EmailService>();
 builder.Services.AddMediatR(config =>
     config.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(MapsterConfigurationExtenstion)) 
                                         ?? throw new NullReferenceException("No MediatR services found")));
+builder.Services.AddFiltersSortersPaginator<AppDbContext>(
+    configure =>
+    {
+        configure.ReflectOver = InspectionType.Properties;
+        configure.CountOfElementsOnPage = 10;
+    });
+
 builder.Services.AddMapsterConfiguration();
 builder.Services.AddMapster();
 
