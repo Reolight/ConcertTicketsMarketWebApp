@@ -7,10 +7,15 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import { produce } from 'immer'
+import { Post } from "../../features/backfetch";
+import { stringify } from "ajv";
 //props contains performer;
 
-export default function PerformerNew(props) {
+export default function PerformerNew({ returnUrl, performer}) {
+    const ROUTE = 'performers/';
+
     const [state, setState] = useState();
+    const [isPosting, setPosting] = useState(false)
 
     useEffect(() => {
         console.log(props);
@@ -20,6 +25,31 @@ export default function PerformerNew(props) {
     }, [props])
 
     useEffect(() => { console.clear(); console.log(`new state: `, state)},[state])
+
+    useEffect(() => {
+        if (isPosting){
+            if (!state.isNew){
+                const response = Update(ROUTE, state.performer);
+                console.log(response.status);
+                return;
+            }
+
+            const data = Post(ROUTE, state.performer).then(resolve);
+            if ('error' in data){
+                console.error(data.error);
+                return;
+            }
+
+            setState(produce(draft => {
+                draft.performer = data.performer;
+                draft.isNew = false;
+            }));
+        } else console.log(`edited?`)
+    }, [isPosting])
+
+    const handlePosting = () => {
+        setPosting(true);
+    }
 
     const handlePropertyChange = (e, field) => {
         setState(produce(draftState => {
@@ -68,7 +98,10 @@ export default function PerformerNew(props) {
                 
                     {state.isNew? <>
                         <Grid item xs={3}>
-                            <Button color="success" variant="contained">
+                            <Button color="success" variant="contained"
+                                disabled={isPosting}
+                                onClick={handlePosting}
+                            >
                                 Create
                             </Button>
                         </Grid>
@@ -79,7 +112,9 @@ export default function PerformerNew(props) {
                         </Grid>
                     </> : <>
                         <Grid item xs={3}>
-                            <Button color="primary" variant="contained">
+                            <Button color="primary" variant="contained"
+                                disabled={isPosting}
+                            >
                                 Update
                             </Button>
                         </Grid>
