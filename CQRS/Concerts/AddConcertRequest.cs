@@ -3,5 +3,5 @@ using MediatR;
 
 namespace ConcertTicketsMarketWebApp.CQRS.Concerts
 {
-    public class AddConcertRequest : Concert, IRequest<bool> { }
+    public class AddConcertRequest : Concert, IRequest<Concert?> { }
 }

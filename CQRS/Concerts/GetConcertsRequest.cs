@@ -4,8 +4,8 @@ using ViewModels;
 
 namespace ConcertTicketsMarketWebApp.CQRS.Concerts
 {
-    public class GetConcertsRequest : IRequest<List<ConcertSuperficial>>
+    public class GetConcertsRequest : IRequest<(IEnumerable<ConcertSuperficial>, int)>
     {
-        public List<SortingCriterion> Sorting { get; set; } = new();
+        public string query { get; set; } = string.Empty;
     }
 }

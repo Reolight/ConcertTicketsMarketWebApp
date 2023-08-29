@@ -50,7 +50,7 @@ public static class FilterSorterPaginatorServiceExtensions
         => (action(serviceTuple.queryable), serviceTuple.fspService);
     
     public static (IQueryable<TProjected> queryable, IFilterSorterPaginatorService fspService)
-        ApplyAction<TObject, TProjected>(
+        ApplyProjectingAction<TObject, TProjected>(
             this (IQueryable<TObject> queryable, IFilterSorterPaginatorService fspService) serviceTuple,
             Func<IQueryable<TObject>, IQueryable<TProjected>> action)
         => (action(serviceTuple.queryable), serviceTuple.fspService);

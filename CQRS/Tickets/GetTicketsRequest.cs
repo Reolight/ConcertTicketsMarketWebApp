@@ -7,7 +7,8 @@ namespace ConcertTicketsMarketWebApp.CQRS.Tickets
 {
     public class GetTicketsRequest : IRequest<List<Ticket>>
     {
-        public List<SortingCriterion> SortingCriteria { get; set; } = new();
+        // ReSharper disable once NullableWarningSuppressionIsUsed
+        public string JsonQuery { get; set; } = null!;
         
         // Concert id
         public Guid ConcertId { get; set; }

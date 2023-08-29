@@ -1,4 +1,5 @@
 ﻿using ConcertTicketsMarketModel.Data;
+using ConcertTicketsMarketModel.Model.Performers;
 using ConcertTicketsMarketWebApp.CQRS.Discounts;
 using MediatR;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -6,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ConcertTicketsMarketWebApp.CQRS.Performers
 {
-    public class AddPerformerHandler : IRequestHandler<AddPerformerRequest, bool>
+    public class AddPerformerHandler : IRequestHandler<AddPerformerRequest, Performer?>
     {
         private readonly AppDbContext _context;
         private readonly ILogger<AddPerformerHandler> _logger;
@@ -16,21 +17,21 @@ namespace ConcertTicketsMarketWebApp.CQRS.Performers
             _logger = logger;
         }
          
-        public async Task<bool> Handle(AddPerformerRequest request, CancellationToken cancellationToken)
+        public async Task<Performer?> Handle(AddPerformerRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                await _context.Performers.AddAsync(request.Performer, cancellationToken);
+                var performerEntry = await _context.Performers.AddAsync(request.Performer, cancellationToken);
                 _logger.LogInformation("Added {PerformerType} with name {Name}",
                     request.Performer.GetType().Name, request.Performer.Name);
                 await _context.SaveChangesAsync(cancellationToken);
-                return true;
+                return performerEntry.Entity;
             }
             catch (Exception e)
             {
                 _logger.LogError("{Message}\n{StackTrace}",
                     e.Message, e.StackTrace);
-                return false;
+                return null;
             }
         }
     }

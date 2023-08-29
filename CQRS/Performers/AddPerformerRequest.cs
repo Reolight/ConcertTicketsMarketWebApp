@@ -3,7 +3,7 @@ using MediatR;
 
 namespace ConcertTicketsMarketWebApp.CQRS.Performers
 {
-    public class AddPerformerRequest : IRequest<bool>
+    public class AddPerformerRequest : IRequest<Performer?>
     {
         public Performer Performer { get; set; }
     }

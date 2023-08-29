@@ -1,11 +1,12 @@
 ﻿using ConcertTicketsMarketModel.Model.Performers;
 using MediatR;
 using SorterByCriteria;
+#pragma warning disable CS8618
 
 namespace ConcertTicketsMarketWebApp.CQRS.Performers
 {
-    public class GetPerformersRequest : IRequest<List<Performer>>
+    public class GetPerformersRequest : IRequest<(IEnumerable<Performer>, int)>
     {
-        public List<SortingCriterion> SortingCriteria { get; set; } = new();
+        public string JsonQuery { get; set; }
     }
 }
