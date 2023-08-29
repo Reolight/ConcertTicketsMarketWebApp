@@ -1,4 +1,5 @@
-﻿using ConcertTicketsMarketWebApp.CQRS.Concerts;
+﻿using ConcertTicketsMarketModel.Model.Concerts;
+using ConcertTicketsMarketWebApp.CQRS.Concerts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,10 @@ public class ConcertsController : ControllerBase
     }
 
     [HttpGet, AllowAnonymous]
-    public async Task<IActionResult> GetAllConcerts([FromQuery] GetConcertsRequest criteria)
+    public async Task<IActionResult> GetAllConcerts([FromQuery] string query)
     {
-        var foundConcerts = await _mediator.Send(criteria, CancellationToken.None);
+        var foundConcerts = await _mediator
+            .Send(new GetConcertsRequest { query = query }, CancellationToken.None);
         return Ok(foundConcerts);
     }
 
@@ -36,8 +38,8 @@ public class ConcertsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> PostConcert([FromBody] AddConcertRequest addConcertRequest)
     {
-        if (await _mediator.Send(addConcertRequest))
-            return Created("Created", addConcertRequest.Name);
+        if (await _mediator.Send(addConcertRequest) is { } concert)
+            return Created("Created", concert);
         return BadRequest();
     }
 

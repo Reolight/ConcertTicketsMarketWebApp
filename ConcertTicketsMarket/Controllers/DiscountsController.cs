@@ -20,8 +20,8 @@ public class DiscountsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddDiscount([FromBody] AddDiscountRequest addDiscountRequest)
     {
-        if (await _mediator.Send(addDiscountRequest))
-            return Created("created", addDiscountRequest.Promocode);
+        if (await _mediator.Send(addDiscountRequest) is {} discount)
+            return Created("created", discount);
         return BadRequest();
     }
 

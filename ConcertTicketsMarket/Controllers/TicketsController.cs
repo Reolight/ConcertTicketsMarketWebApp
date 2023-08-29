@@ -28,10 +28,9 @@ public class TicketsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddTicket([FromBody] AddTicketsRequest addTicketsRequest)
     {
-        if (await _mediator.Send(addTicketsRequest))
-            return Created("successful", addTicketsRequest.TicketTemplate.ConcertId);
+        if (await _mediator.Send(addTicketsRequest) is {} tickets)
+            return Created("successful", tickets);
         return BadRequest();
-
     }
 
     [HttpPut]

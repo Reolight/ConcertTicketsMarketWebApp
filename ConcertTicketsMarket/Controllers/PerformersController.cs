@@ -28,18 +28,17 @@ public class PerformersController : ControllerBase
     }
 
     [HttpGet, AllowAnonymous]
-    public async Task<IActionResult> GetPerformers([FromQuery] GetPerformersRequest getPerformersRequest)
+    public async Task<IActionResult> GetPerformers([FromQuery] string query)
     {
-        if (await _mediator.Send(getPerformersRequest) is List<Performer> { Count: > 0 } performers)
+        if (await _mediator.Send(new GetPerformersRequest { JsonQuery = query} ) is { } performers)
             return Ok(performers);
-        return NotFound();
     }
 
     [HttpPost]
     public async Task<IActionResult> AddPerformer([FromBody] AddPerformerRequest addPerformerRequest)
     {
-        if (await _mediator.Send(addPerformerRequest))
-            return Created("created", addPerformerRequest.Performer.Id);
+        if (await _mediator.Send(addPerformerRequest) is { } performer)
+            return Created("created", performer);
         return BadRequest();
     }
 
