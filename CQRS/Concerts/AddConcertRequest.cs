@@ -1,7 +1,7 @@
 ﻿using ConcertTicketsMarketModel.Model.Concerts;
 using MediatR;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Concerts
+namespace CQRS.Concerts
 {
     public class AddConcertRequest : Concert, IRequest<Concert?> { }
 }

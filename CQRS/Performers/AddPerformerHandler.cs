@@ -1,11 +1,9 @@
 ﻿using ConcertTicketsMarketModel.Data;
 using ConcertTicketsMarketModel.Model.Performers;
-using ConcertTicketsMarketWebApp.CQRS.Discounts;
 using MediatR;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Performers
+namespace CQRS.Performers
 {
     public class AddPerformerHandler : IRequestHandler<AddPerformerRequest, Performer?>
     {

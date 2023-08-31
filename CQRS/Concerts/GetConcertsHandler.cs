@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using SorterByCriteria;
 using ViewModels;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Concerts
+namespace CQRS.Concerts
 {
     public class GetConcertsHandler : IRequestHandler<
         GetConcertsRequest,

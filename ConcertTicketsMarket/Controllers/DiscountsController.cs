@@ -1,4 +1,4 @@
-﻿using ConcertTicketsMarketWebApp.CQRS.Discounts;
+﻿using CQRS.Discounts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

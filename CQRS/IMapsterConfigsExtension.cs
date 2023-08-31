@@ -4,7 +4,7 @@ using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 using ViewModels;
 
-namespace ConcertTicketsMarketWebApp
+namespace CQRS
 {
     public static class MapsterConfigurationExtenstion
     {
@@ -19,6 +19,18 @@ namespace ConcertTicketsMarketWebApp
                 .Map(dest => dest.PerformerType,
                     src => PerformerTypeConverter.GetPerformerType(src))
                 .PreserveReference(true);
+            TypeAdapterConfig<Performer, PerformerViewModel>
+                .NewConfig()
+                .Map(dest => dest.Concerts,
+                    source => source.Concerts.Select(concert => concert.Adapt<ConcertSuperficial>()))
+                .Map(dest => dest.PerformerType,
+                    src => PerformerTypeConverter.GetPerformerType(src))
+                .Map(dest => dest.Performers,
+                    source =>
+                        source.GetType() == typeof(Band)
+                            ? ((Band)source).Performers.Select(performer => performer.Adapt<PerformerSuperficial>())
+                            : null
+                );
         }
     }
 }

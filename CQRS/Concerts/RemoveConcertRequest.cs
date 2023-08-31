@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Concerts
+namespace CQRS.Concerts
 {
     public class RemoveConcertRequest : IRequest<bool>
     {

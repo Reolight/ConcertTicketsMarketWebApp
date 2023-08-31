@@ -1,8 +1,7 @@
-﻿using SorterByCriteria;
-using MediatR;
+﻿using MediatR;
 using ViewModels;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Concerts
+namespace CQRS.Concerts
 {
     public class GetConcertsRequest : IRequest<(IEnumerable<ConcertSuperficial>, int)>
     {

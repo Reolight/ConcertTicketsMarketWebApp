@@ -1,13 +1,11 @@
-﻿using AutoMapper;
-using ConcertTicketsMarketModel.Data;
+﻿using ConcertTicketsMarketModel.Data;
 using Mapster;
-using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using ViewModels;
 using IMapper = MapsterMapper.IMapper;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Concerts;
+namespace CQRS.Concerts;
 
 public class GetConcertByIdHandler : IRequestHandler<GetConcertByIdRequest, ConcertSuperficial?>
 {

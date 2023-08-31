@@ -1,5 +1,5 @@
 ﻿using ConcertTicketsMarketModel;
-using ConcertTicketsMarketWebApp.CQRS.Tickets;
+using CQRS.Tickets;
 using Duende.IdentityServer.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

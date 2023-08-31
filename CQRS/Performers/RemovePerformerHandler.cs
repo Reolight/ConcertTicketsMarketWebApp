@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Performers
+namespace CQRS.Performers
 {
     public class RemovePerformerHandler : IRequestHandler<RemovePerformerRequest, bool>
     {

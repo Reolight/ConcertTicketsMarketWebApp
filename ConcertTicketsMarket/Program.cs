@@ -3,6 +3,7 @@ using ConcertTicketsMarketModel;
 using ConcertTicketsMarketModel.Data;
 using ConcertTicketsMarketModel.Data.Identity;
 using ConcertTicketsMarketWebApp;
+using CQRS;
 using EmailService;
 using Mapster;
 using SorterByCriteria.DI;

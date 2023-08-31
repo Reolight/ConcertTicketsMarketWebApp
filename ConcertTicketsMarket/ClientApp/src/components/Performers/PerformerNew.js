@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { initPerformerUpdate, performerTypes, voiceTypes } from "../types/Performers";
+import { initPerformerUpdate, performerTypes, voiceTypes } from "../verboseHandlers/Performers";
 import { Button, Container, Grid, TextField, breadcrumbsClasses } from "@mui/material";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';

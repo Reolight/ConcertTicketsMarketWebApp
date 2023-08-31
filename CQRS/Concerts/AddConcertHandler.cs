@@ -3,7 +3,7 @@ using ConcertTicketsMarketModel.Model.Concerts;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Concerts
+namespace CQRS.Concerts
 {
     public class AddConcertHandler : IRequestHandler<AddConcertRequest, Concert?>
     {

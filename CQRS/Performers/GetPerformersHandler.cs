@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SorterByCriteria;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Performers
+namespace CQRS.Performers
 {
     public class GetPerformersHandler : IRequestHandler<GetPerformersRequest, (IEnumerable<Performer>, int)>
     {

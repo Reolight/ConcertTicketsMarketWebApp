@@ -1,9 +1,7 @@
-﻿using ConcertTicketsMarketModel;
-using ConcertTicketsMarketModel.Model;
+﻿using ConcertTicketsMarketModel.Model;
 using MediatR;
-using SorterByCriteria;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Tickets
+namespace CQRS.Tickets
 {
     public class GetTicketsRequest : IRequest<List<Ticket>>
     {

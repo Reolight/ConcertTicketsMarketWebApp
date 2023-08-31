@@ -3,7 +3,7 @@
 using ConcertTicketsMarketModel.Model.Performers;
 using MediatR;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Performers
+namespace CQRS.Performers
 {
     public class UpdatePerformerRequest : IRequest<bool>
     {

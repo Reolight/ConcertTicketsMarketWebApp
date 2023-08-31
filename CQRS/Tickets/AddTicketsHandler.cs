@@ -1,10 +1,9 @@
 ﻿using ConcertTicketsMarketModel.Data;
 using ConcertTicketsMarketModel.Model;
-using ConcertTicketsMarketWebApp.CQRS.Performers;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Tickets
+namespace CQRS.Tickets
 {
     public class AddTicketsHandler : IRequestHandler<AddTicketsRequest, IEnumerable<Ticket>>
     {

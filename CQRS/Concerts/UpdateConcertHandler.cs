@@ -3,7 +3,7 @@ using Mapster;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Concerts
+namespace CQRS.Concerts
 {
     public class UpdateConcertHandler: IRequestHandler<UpdateConcertRequest, bool>
     {

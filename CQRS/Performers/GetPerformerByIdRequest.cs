@@ -1,9 +1,9 @@
-﻿using ConcertTicketsMarketModel.Model.Performers;
-using MediatR;
+﻿using MediatR;
+using ViewModels;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Performers;
+namespace CQRS.Performers;
 
-public class GetPerformerByIdRequest : IRequest<Performer?>
+public class GetPerformerByIdRequest : IRequest<PerformerViewModel?>
 {
     public Guid PerformerId { get; set; }
 }

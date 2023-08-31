@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Tickets
+namespace CQRS.Tickets
 {
     public class BookTicketRequest : IRequest<bool>
     {

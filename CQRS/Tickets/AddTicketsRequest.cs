@@ -1,9 +1,9 @@
 ﻿// ReSharper disable NullableWarningSuppressionIsUsed
-using ConcertTicketsMarketModel;
+
 using ConcertTicketsMarketModel.Model;
 using MediatR;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Tickets
+namespace CQRS.Tickets
 {
     public class AddTicketsRequest : IRequest<IEnumerable<Ticket>>
     {

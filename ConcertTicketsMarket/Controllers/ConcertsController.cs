@@ -1,5 +1,5 @@
 ﻿using ConcertTicketsMarketModel.Model.Concerts;
-using ConcertTicketsMarketWebApp.CQRS.Concerts;
+using CQRS.Concerts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

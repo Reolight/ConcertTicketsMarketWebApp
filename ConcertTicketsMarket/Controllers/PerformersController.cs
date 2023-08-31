@@ -1,5 +1,5 @@
 ﻿using ConcertTicketsMarketModel.Model.Performers;
-using ConcertTicketsMarketWebApp.CQRS.Performers;
+using CQRS.Performers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,8 +30,8 @@ public class PerformersController : ControllerBase
     [HttpGet, AllowAnonymous]
     public async Task<IActionResult> GetPerformers([FromQuery] string query)
     {
-        if (await _mediator.Send(new GetPerformersRequest { JsonQuery = query} ) is { } performers)
-            return Ok(performers);
+        var performers = await _mediator.Send(new GetPerformersRequest { JsonQuery = query });
+        return Ok(performers);
     }
 
     [HttpPost]

@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Discounts
+namespace CQRS.Discounts
 {
     public class UpdateDiscountHandler : IRequestHandler<UpdateDiscountRequest, bool>
     {

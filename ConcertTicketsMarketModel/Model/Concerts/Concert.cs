@@ -12,7 +12,11 @@ public class Concert
     public DateTime StartTime { get; set; }
     public TimeSpan Duration { get; set; }
     public AgeRating Rating { get; set; }
-    public Location Place { get; set; } = null!;
+    
+    // Location. Decided not to flatten
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+    
     public List<Ticket> Tickets { get; set; } = new List<Ticket>();
     public Performer Performer { get; set; } = null!;
     public List<Discount> Promocodes { get; set; } = new List<Discount>();

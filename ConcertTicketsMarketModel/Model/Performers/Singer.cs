@@ -2,6 +2,6 @@
 {
     public class Singer : Performer
     {
-        VoiceTypes VoiceType { get; set; }
+        public VoiceTypes VoiceType { get; set; }
     }
 }

@@ -13,6 +13,9 @@ public class ConcertSuperficial
     public DateTime StartTime { get; set; }
     public int Duration { get; set; }
     public AgeRating Rating { get; set; }
-    public Location Place { get; set; } = null!;
+    
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+    
     public PerformerSuperficial Performer { get; set; } = null!;
 }

@@ -17,9 +17,6 @@ namespace ConcertTicketsMarketModel.Data
         public DbSet<Band> Bands { get; set; }
         public DbSet<Singer> Singers { get; set; }
         
-        // The next is for searching by location
-        public DbSet<Location> Locations { get; set; }
-
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

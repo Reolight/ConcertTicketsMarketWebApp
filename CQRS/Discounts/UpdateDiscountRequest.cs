@@ -1,8 +1,7 @@
-﻿using ConcertTicketsMarketModel;
-using ConcertTicketsMarketModel.Model;
+﻿using ConcertTicketsMarketModel.Model;
 using MediatR;
 
-namespace ConcertTicketsMarketWebApp.CQRS.Discounts
+namespace CQRS.Discounts
 {
     public class UpdateDiscountRequest : Discount, IRequest<bool>
     {

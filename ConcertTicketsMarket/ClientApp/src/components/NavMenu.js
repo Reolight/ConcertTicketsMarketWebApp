@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
 import './NavMenu.css';
+import authService from './api-authorization/AuthorizeService';
 
 // page links: text, role (undef, u, a), route;
 const pageLinks = [
@@ -12,47 +13,36 @@ const pageLinks = [
   { text: 'Discounts', role: 'a', route: '/discounts'}
 ]
 
-export class NavMenu extends Component {
-  static displayName = NavMenu.name;
+export default function NavMenu(props) {
+  const [collapsed, setCollapsed] = useState(true);
+  const [user, setUser] = useState();
 
-  constructor (props) {
-    super(props);
+  useEffect(() => authService.getUser().then(user => setUser(user)), [props])
 
-    this.toggleNavbar = this.toggleNavbar.bind(this);
-    this.state = {
-      collapsed: true
-    };
+  function toggleNavbar() {
+    setCollapsed(!collapsed);
   }
 
-  toggleNavbar () {
-    this.setState({
-      collapsed: !this.state.collapsed
-    });
-  }
+  
+  return (
+    <header>
+      <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light>
+        <NavbarBrand tag={Link} to="/">ConcertTicketsMarket</NavbarBrand>
+        <NavbarToggler onClick={toggleNavbar} className="mr-2" />
+        <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!collapsed} navbar>
+          <ul className="navbar-nav flex-grow">
+            {pageLinks
+              .filter(link => link.role && link.role === user.role)
+              .map(link => <NavItem>
+                <NavLink tag={Link} className="text-dark" to={link.route}>{link.text}</NavLink>
+              </NavItem>
+            )}
 
-  render() {
-    return (
-      <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light>
-          <NavbarBrand tag={Link} to="/">ConcertTicketsMarket</NavbarBrand>
-          <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-          <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-            <ul className="navbar-nav flex-grow">
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/">Counter</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/performers">Fetch data</NavLink>
-              </NavItem>
-              <LoginMenu>
-              </LoginMenu>
-            </ul>
-          </Collapse>
-        </Navbar>
-      </header>
-    );
-  }
+            <LoginMenu>
+            </LoginMenu>
+          </ul>
+        </Collapse>
+      </Navbar>
+    </header>
+  );
 }
