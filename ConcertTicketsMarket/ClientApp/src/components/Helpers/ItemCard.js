@@ -1,5 +1,6 @@
 import { Button, Typography, Card, CardActionArea, CardContent, CardActions, CardHeader, Paper, Stack, Grid, IconButton } from "@mui/material";
-import { DeleteIcon, EditIcon } from '@mui/icons-material/Delete'
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 export default function ItemCard(props){
     const { id, name, description, additional, picture, primary_action, is_redactor } = props;

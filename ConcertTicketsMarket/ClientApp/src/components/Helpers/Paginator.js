@@ -1,9 +1,10 @@
-import { Grid } from "@mui/material";
+import { Grid, Button, Item } from "@mui/material";
 import { useEffect, useState } from "react"
 
 // query_maker require (page_to_query, elems_count)
-export default function Paginator({ page_navigator, max_pages, current_page }){
+export default function Paginator(props){
     // should be calculated based on viewport width...
+    const { page_navigator, max_pages, current_page } = props;
     const RENDER_RANGE = 5;
     
     const [elems_count, setElemsCount] = useState(20);
@@ -37,20 +38,20 @@ export default function Paginator({ page_navigator, max_pages, current_page }){
                 <Grid item xs={10} container spacing={1} justifyContent='center'>
                     {() => {
                         {range.from > 0 && <Grid item>
-                            <Item onClick={() => props.query_maker(r, elems_count)}>1</Item>
-                            <Item>...</Item>
+                            <Button onClick={() => props.query_maker(0, elems_count)}>1</Button>
+                            <Button>...</Button>
                         </Grid>}
 
                         for (let r of range){
                             return (
                             <Grid item>
-                                <Item onClick={() => props.query_maker(r, elems_count)}>{r + 1}</Item>
+                                <Button onClick={() => props.query_maker(r, elems_count)}>{r + 1}</Button>
                             </Grid>)
                         }
 
                         {range.to < props.max_pages && <Grid item>
-                            <Item>...</Item>
-                            <Item onClick={() => props.query_maker(r, elems_count)}>{props.max_pages + 1}</Item>
+                            <Button>...</Button>
+                            <Button onClick={() => props.query_maker(props.max_pages, elems_count)}>{props.max_pages + 1}</Button>
                         </Grid>}
                     }}
                 </Grid>
