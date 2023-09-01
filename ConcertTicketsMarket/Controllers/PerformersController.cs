@@ -1,9 +1,7 @@
-﻿using ConcertTicketsMarketModel.Model.Performers;
-using CQRS.Performers;
+﻿using CQRS.Performers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ViewModels;
 
 namespace ConcertTicketsMarketWebApp.Controllers;
 

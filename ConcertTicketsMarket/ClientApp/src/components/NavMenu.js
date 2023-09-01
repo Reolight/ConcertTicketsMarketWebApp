@@ -3,8 +3,8 @@ import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from '
 import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
 import './NavMenu.css';
-import authService from './api-authorization/AuthorizeService';
-import Loading from './Helpers/Loading';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../features/reducer/userSlice';
 
 // page links: text, role (undef, u, a), route;
 const pageLinks = [
@@ -16,21 +16,12 @@ const pageLinks = [
 
 export default function NavMenu(props) {
   const [collapsed, setCollapsed] = useState(true);
-  const [user, setUser] = useState();
 
-  useEffect(() => {
-    authService
-      .getUser()
-      .then(u => {
-        setUser(u);
-        console.log(u);
-      })
-    }, [props]);
+  const user = useSelector(store => store.user);
 
   function toggleNavbar() {
     setCollapsed(!collapsed);
   }
-
 
   return (
     <header>
