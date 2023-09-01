@@ -4,9 +4,9 @@ import PerformerNew from './components/Performers/PerformerNew';
 import Performers from './components/Performers/Performers';
 
 export const RouteParts = {
-  performers: 'performers/',
-  update: 'update/',
-  concerts: 'concerts/'
+  performers: '/performers',
+  update: '/update',
+  concerts: '/concerts'
 }
 
 const AppRoutes = [

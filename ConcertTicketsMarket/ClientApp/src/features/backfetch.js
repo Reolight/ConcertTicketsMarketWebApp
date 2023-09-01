@@ -1,8 +1,8 @@
-import { produce } from 'immer';
 import authService from '../components/api-authorization/AuthorizeService'
 
 function build_params(params){
     let query;
+    if (!params) return '';
     for (const prop_name in params){
         query += `${(!query? '?' : '&')}${prop_name}=${params[prop_name]}}`;
     }
@@ -10,24 +10,27 @@ function build_params(params){
     return query;
 }
 
-function make_request(querystring, method, object, content_type, stringify = true) {
-    let requestInit = produce(async draft_req => {
-        const token = await authService.getAccessToken();
-        if (!!token)
-            draft_req.headers.Authorization = `Bearer ${token}`;
-        if (!!content_type)
-            draft_req.headers['Content-type'] = content_type;
-        draft_req.method = !!method? method : 'get';
-        if (!!object)
-            draft_req.body = stringify? JSON.stringify(object) : object;
-    });
+async function make_request(querystring, method, object, content_type, stringify = true) {
+    let req = {};
+    const token = await authService.getAccessToken();
+    if (!!token)
+        req = {...req, headers: {Authorization: `Bearer ${token}`}};
+    if (!!content_type)
+        req = {...req, headers: { ...req.headers, ['Content-type']: content_type}};
+        req = {...req, method: !!method? method : 'get'};
+    if (!!object)
+        req = {...req, body: stringify? JSON.stringify(object) : object};
 
-    return fetch(querystring, requestInit);
+    console.log(`fetching: `, querystring, req);
+    return fetch(querystring, req);
 }
 
 export async function Get(route, params_obj /*is obj*/){
+    console.log(`get from: `, route, params_obj)
     const query = build_params(params_obj);
-    const response = await make_request(`${route}${route.at(-1) === '/'? '' : '/'}${query}`);
+    const qs = `${route}${route.at(-1) === '/'? '' : '/'}${query}`;
+    const response = await make_request(qs);
+    console.log(`response from ${qs}: `, response);
     if (!response.ok){
         console.error(response.error);
         return;

@@ -7,19 +7,19 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import { produce } from 'immer'
-import { Post } from "../../features/backfetch";
+import { Post, Update } from "../../features/backfetch";
 import { stringify } from "ajv";
 //props contains performer;
 
-export default function PerformerNew({ returnUrl, performer}) {
+export default function PerformerNew(props) {
     const ROUTE = 'performers/';
 
     const [state, setState] = useState();
     const [isPosting, setPosting] = useState(false)
 
     useEffect(() => {
-        console.log(props);
-        const performer = initPerformerUpdate(props.performer);
+        if (props) console.log(props);
+        const performer = initPerformerUpdate(!!props? props.performer : undefined);
         console.log(performer);
         setState(performer);
     }, [props])
@@ -34,16 +34,19 @@ export default function PerformerNew({ returnUrl, performer}) {
                 return;
             }
 
-            const data = Post(ROUTE, state.performer).then(resolve);
-            if ('error' in data){
-                console.error(data.error);
-                return;
-            }
+            Post(ROUTE, state.performer)
+                .then(data =>
+                {
+                    if ('error' in data) {
+                        console.error(data.error);
+                        return;
+                    }
 
-            setState(produce(draft => {
-                draft.performer = data.performer;
-                draft.isNew = false;
-            }));
+                    setState(produce(draft => {
+                        draft.performer = data.performer;
+                        draft.isNew = false;
+                    }))
+                });
         } else console.log(`edited?`)
     }, [isPosting])
 

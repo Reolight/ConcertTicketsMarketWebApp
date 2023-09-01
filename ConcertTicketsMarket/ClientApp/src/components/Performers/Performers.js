@@ -1,6 +1,8 @@
 import DataList from "../Helpers/DataList";
 
-export default function Performers(props){
+// props has user
+
+export default function Performers({ user }){
     const performer_linker = (performer, prop_name) => {
         switch (prop_name){
             case 'name':
@@ -16,6 +18,7 @@ export default function Performers(props){
     
     return <DataList 
         route={`performers/` } 
+        collection_name={`performers`}
         object_linker={performer_linker}
     />
 }

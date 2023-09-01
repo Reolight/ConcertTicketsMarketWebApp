@@ -34,10 +34,6 @@ export default function PerformerView({ performer : { id, name, performerType }}
                     </Typography>
                 </Grid>
             </Grid>
-
-            {performer.voiceType &&<Grid item>
-                <Typography>Voice type: {performer.voiceType}</Typography>
-            </Grid>}
         </Grid>
     </Container>)
 }

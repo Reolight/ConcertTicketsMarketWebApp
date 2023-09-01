@@ -11,10 +11,12 @@ import ItemCard from "./ItemCard";
 // example: (element, prop) => switch ... case 'name': element.name — is a linker 
 // called as: <ItemCard name={object_linker(element, 'name') } ... />
 
-export default function DataList({ route, object_linker}) {
-    const [state, setState] = useState({ data_list: [], max_pages: 0, isLoading: true});
+export default function DataList(props) {
+    const { route, collection_name, object_linker, admin_header} = props;
+
+    const [state, setState] = useState({ [collection_name]: [], max_pages: 0, isLoading: true});
     const [user, setUser] = useState({
-        data_list: [],
+        [collection_name]: [],
         max_pages: 0,
         current_page: 0,
         elem_count: DEFAULT_PAGE_COUNT,
@@ -34,29 +36,33 @@ export default function DataList({ route, object_linker}) {
     }, [props])
 
     useEffect(() => {
-        const result_data = Get(route, Object.keys(query).length > 0?
+        console.log(`collection name is: ${collection_name}`)
+        console.log(`retrieving performers`);
+        Get(route, Object.keys(query).length > 0?
              query_builder.buildQuery() : undefined
-        ).then(response => {
-            if (!response.ok)
-                console.error(response.error);
-            return response.json();
-        }).then(resolve);
-            
-        setState({
-            data_list: result_data.resultData,
-            max_pages: result_data.maxPages,
-            current_page: !!query.page ? query.page : 0,
-            elem_count: !!query.count ? query.count : DEFAULT_PAGE_COUNT,
-            isLoading: false 
-        })
+        ).then(result_data => {
+            console.log(result_data);
+            setState({
+                [collection_name]: result_data[collection_name],
+                max_pages: result_data.maxPages,
+                current_page: !!query.page ? query.page : 0,
+                elem_count: !!query.count ? query.count : DEFAULT_PAGE_COUNT,
+                isLoading: false 
+            })}
+        );
     }, [state.current_page, state.elem_count])
+
+    useEffect(() => console.log(state),[state])
 
     if (state.isLoading) return <Loading />
 
     return(<>
         {!state.isLoading && 
-            state.data_list.length > 0 && 
-            state.data_list.map(element => <ItemCard 
+            state[collection_name] &&
+            state[collection_name].length > 0 && 
+            state[collection_name].map(element => <ItemCard 
+                id={element.id}
+                is_redactor={!!admin_header}
                 name={props.object_linker(element, 'name')}
                 description={props.object_linker(element, 'description')}
                 primary_action={props.object_linker(element, 'primary_action')}

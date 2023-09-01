@@ -15,11 +15,11 @@ internal static class SorterExtensions
     /// <returns>IOrderedQueryable sorted by criteria</returns>
     internal static IQueryable<T> SortByCriteria<T>(
         this IQueryable<T> queryable,
-        List<SortingCriterion> criteria)
+        List<SortingCriterion>? criteria)
     {
         // ReSharper disable once NullableWarningSuppressionIsUsed
         IOrderedQueryable<T> ordered = null!;
-        for (int index = 0; index < criteria.Count; index++)
+        for (int index = 0; index < criteria?.Count; index++)
         {
             var criterion = criteria[index];
             if (index == 0)

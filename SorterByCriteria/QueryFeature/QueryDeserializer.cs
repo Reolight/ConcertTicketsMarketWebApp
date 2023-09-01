@@ -13,9 +13,9 @@ internal class QueryDeserializer
     
     internal AdvancedQuery<TObject> Deserialize<TObject>(string json)
     {
-        AdvancedQuery<TObject> query = new AdvancedQuery<TObject>();
+        var query = new AdvancedQuery<TObject>();
         if (string.IsNullOrWhiteSpace(json))
-            return new AdvancedQuery<TObject>();
+            return query;
         using var document = JsonDocument.Parse(json);
         ParseBasicProperties(document, query);
         return query;

@@ -21,10 +21,12 @@ namespace CQRS.Performers
 
         public Task<(IEnumerable<Performer>, int)> Handle(GetPerformersRequest request,
             CancellationToken cancellationToken)
-            => Task.FromResult((_context.Performers, _fsp).WithJsonQuery(request.JsonQuery)
-                .ApplyFilters()
-                .ApplySorting()
-                .ApplyAction(q => q.AsNoTracking())
-                .ApplyPagination());
+        {
+            var tuple = (_context.Performers, _fsp).WithJsonQuery(request.JsonQuery).ApplyFilters();
+            tuple = tuple.ApplySorting();
+            tuple = tuple.ApplyAction(q => q.AsNoTracking());
+            var result = tuple.ApplyPagination();
+            return Task.FromResult(result);
+        }
     }
 }

@@ -34,9 +34,7 @@ public partial class FilterSorterPaginatorService<TContext>
 
     public IQueryable<TObject>
             ApplySorting<TObject>(IQueryable<TObject> queryable, AdvancedQuery<TObject>? query) =>
-            queryable.SortByCriteria((query ?? _cachedQuery)?.Sorting ??
-                                     throw new NullReferenceException(
-                                         "Can't check sorting criteria because no query found"));
+            queryable.SortByCriteria((query ?? _cachedQuery)?.Sorting);
         
     public (IEnumerable<TObject> ResultData, int MaxPages) ApplyPagination<TObject>(IQueryable<TObject> queryable)
     {

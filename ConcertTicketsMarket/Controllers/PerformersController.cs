@@ -3,11 +3,12 @@ using CQRS.Performers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ViewModels;
 
 namespace ConcertTicketsMarketWebApp.Controllers;
 
 [ApiController]
-[Authorize(policy: "admin")]
+//[Authorize(policy: "admin")]
 [Route("[controller]")]
 public class PerformersController : ControllerBase
 {
@@ -18,8 +19,8 @@ public class PerformersController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet, AllowAnonymous]
-    public async Task<IActionResult> GetPerformer(Guid id)
+    [HttpGet, AllowAnonymous, Route("{id}")]
+    public async Task<IActionResult> GetPerformers(Guid id)
     {
         var getPerformerByIdRequest = new GetPerformerByIdRequest { PerformerId = id };
         if (await _mediator.Send(getPerformerByIdRequest) is { } performer)
@@ -28,17 +29,17 @@ public class PerformersController : ControllerBase
     }
 
     [HttpGet, AllowAnonymous]
-    public async Task<IActionResult> GetPerformers([FromQuery] string query)
+    public async Task<IActionResult> GetPerformers([FromQuery] string? query)
     {
         var performers = await _mediator.Send(new GetPerformersRequest { JsonQuery = query });
-        return Ok(performers);
+        return Ok(new { performers = performers.Item1, maxPages = performers.Item2 } );
     }
 
     [HttpPost]
     public async Task<IActionResult> AddPerformer([FromBody] AddPerformerRequest addPerformerRequest)
     {
-        if (await _mediator.Send(addPerformerRequest) is { } performer)
-            return Created("created", performer);
+        if (await _mediator.Send(addPerformerRequest) is { } newPerformer)
+            return Created("created", newPerformer);
         return BadRequest();
     }
 
