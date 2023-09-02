@@ -1,11 +1,10 @@
-﻿using ConcertTicketsMarketModel;
-using CQRS.Tickets;
+﻿using CQRS.Tickets;
 using Duende.IdentityServer.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ConcertTicketsMarketWebApp.Controllers;
+namespace ConcertTicketsMarket.Controllers;
 
 [ApiController]
 [Authorize(policy: "admin")]

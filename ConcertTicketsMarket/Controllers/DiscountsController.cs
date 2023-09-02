@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ConcertTicketsMarketWebApp.Controllers;
+namespace ConcertTicketsMarket.Controllers;
 
 [ApiController]
 [Authorize(policy: "admin")]

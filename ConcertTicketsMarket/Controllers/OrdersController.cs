@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace ConcertTicketsMarketWebApp.Controllers;
+namespace ConcertTicketsMarket.Controllers;
 
 /// <summary>
 /// Controller for buying
