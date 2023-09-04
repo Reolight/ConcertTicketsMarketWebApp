@@ -10,15 +10,25 @@
 //    performers: string[]
 // }
 
-export function initPerformerUpdate(performer = undefined){
-    if (performer !== undefined){
-        return {
-            performer: performer,
-            isNew: false
-        };
-    }
-    
-    return getNewPerformer();
+import { RouteParts } from "../../AppRoutes";
+import { Get } from "../../features/backfetch";
+
+function fetchById(id) {
+    Get(`${RouteParts.performers}/${id}`).then(
+        performer => {
+            console.log(`Fetched performer: `, performer)
+            return {
+                performer: performer,
+                isNew: false
+            }
+        }
+    );
+}
+
+export function initPerformerUpdate(id = undefined) {
+    if (!!id){
+        return fetchById(id)
+    } else return getNewPerformer();
 }
 
 export function getNewPerformer(){

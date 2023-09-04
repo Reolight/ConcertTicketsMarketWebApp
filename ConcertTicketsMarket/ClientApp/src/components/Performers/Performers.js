@@ -1,3 +1,4 @@
+import { RouteParts } from "../../AppRoutes";
 import DataList from "../Helpers/DataList";
 
 // props has user
@@ -17,7 +18,7 @@ export default function Performers({ user }){
     }
     
     return <DataList 
-        route={`performers/` } 
+        route={RouteParts.performers} 
         collection_name={`performers`}
         object_linker={performer_linker}
     />

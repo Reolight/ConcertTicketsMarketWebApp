@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { initPerformerUpdate, performerTypes, voiceTypes } from "../verboseHandlers/Performers";
+import { getNewPerformer, initPerformerUpdate, performerTypes, voiceTypes } from "../verboseHandlers/Performers";
 import { Button, Container, Grid, TextField, breadcrumbsClasses } from "@mui/material";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -7,24 +7,34 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import { produce } from 'immer'
-import { Post, Update } from "../../features/backfetch";
+import { Get, Post, Update } from "../../features/backfetch";
 import { stringify } from "ajv";
+import { useParams } from "react-router-dom";
+import { RouteParts } from "../../AppRoutes";
 //props contains performer;
 
 export default function PerformerNew(props) {
     const ROUTE = 'performers/';
-
+    const { id } = useParams();
     const [state, setState] = useState();
     const [isPosting, setPosting] = useState(false)
 
     useEffect(() => {
-        if (props) console.log(props);
-        const performer = initPerformerUpdate(!!props? props.performer : undefined);
-        console.log(performer);
-        setState(performer);
+        console.log(`Gotten id in params: ${id}`);
+        if (!!id) {
+            Get(`${RouteParts.performers}/${id}`).then(
+                performer => {
+                    console.log(`Fetched performer: `, performer)
+                    setState({
+                        performer: performer,
+                        isNew: false
+                    })
+                }
+            );
+        } else setState(getNewPerformer());
     }, [props])
 
-    useEffect(() => { console.clear(); console.log(`new state: `, state)},[state])
+    useEffect(() => { console.log(`new state: `, state)},[state])
 
     useEffect(() => {
         if (isPosting){
@@ -83,7 +93,7 @@ export default function PerformerNew(props) {
             </Grid>
             <Grid item xs={12} container direction='column' spacing={2}>
                 <Grid item xs={4}>
-                    <FormControl>
+                    <FormControl sx={{width: '180px'}}>
                         <InputLabel id="performer-type-selection-label">Performer type</InputLabel>
                         <Select labelId="performer-type-selection-label" id="performer-type-selection"
                             value={state.performer.type}
