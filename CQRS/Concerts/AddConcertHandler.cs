@@ -16,6 +16,7 @@ namespace CQRS.Concerts
         {
             try
             {
+                
                 var addedConcert = await _context.Concerts.AddAsync(request, cancellationToken);
                 _logger.LogInformation("Concert {NewConcertName} with ID: {EntityId}",
                     request.Name, addedConcert.Entity.Id);

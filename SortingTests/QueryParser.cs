@@ -132,8 +132,8 @@ public partial class QueryParser
         var builtQ = fsp.BuildQuery(advQ);
 
         var filtered = fsp.ApplyFilters(context.Persons, builtQ);
-        var sorted = fsp.ApplySorting(filtered, builtQ);
-        var (actual, _) = fsp.ApplyPagination(sorted, builtQ);
+        var sorted = fsp.ApplySorting(filtered);
+        var (actual, _) = fsp.ApplyPagination(sorted);
                 
         var (expectedList, _) = expectedResultAfterExecution.Invoke(context.Persons);
         Assert.Equivalent(expectedList, actual.ToList());

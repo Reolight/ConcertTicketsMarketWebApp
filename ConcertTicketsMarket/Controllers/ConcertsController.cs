@@ -22,7 +22,7 @@ public class ConcertsController : ControllerBase
     {
         var foundConcerts = await _mediator
             .Send(new GetConcertsRequest { query = query }, CancellationToken.None);
-        return Ok(foundConcerts);
+        return Ok(new { concerts = foundConcerts.Item1, maxPages = foundConcerts.Item2 });
     }
 
     [HttpGet, AllowAnonymous]
