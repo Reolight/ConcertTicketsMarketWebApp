@@ -3,6 +3,7 @@ using ConcertTicketsMarketModel.Model.Performers;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 using ViewModels;
+using ViewModels.PostingModels;
 
 namespace CQRS
 {
@@ -31,6 +32,9 @@ namespace CQRS
                             ? ((Band)source).Performers.Select(performer => performer.Adapt<PerformerSuperficial>())
                             : null
                 );
+            TypeAdapterConfig<ConcertPostingModel, Concert>
+                .NewConfig()
+                .Ignore(dest => dest.Tickets);
         }
     }
 }

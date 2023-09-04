@@ -25,9 +25,9 @@ public class TicketsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddTicket([FromBody] AddTicketsRequest addTicketsRequest)
+    public async Task<IActionResult> AddTicket([FromBody] ConvertForPostingTicketsRequest convertForPostingTicketsRequest)
     {
-        if (await _mediator.Send(addTicketsRequest) is {} tickets)
+        if (await _mediator.Send(convertForPostingTicketsRequest) is {} tickets)
             return Created("successful", tickets);
         return BadRequest();
     }
