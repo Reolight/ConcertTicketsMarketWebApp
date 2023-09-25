@@ -2,7 +2,7 @@ import React from 'react';
 
 export function Home() {
   function redirectToDevComponent(){
-    const link = `${window.location.origin}/performers/update`;
+    const link = `${window.location.origin}/concerts/new`;
     window.location.replace(link);
   }
 

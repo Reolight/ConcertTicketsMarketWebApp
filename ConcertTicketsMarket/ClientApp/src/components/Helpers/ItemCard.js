@@ -1,14 +1,12 @@
-import { Button, Typography, Card, CardActionArea, CardContent, CardActions, CardHeader, Paper, Stack, Grid, IconButton, Icon } from "@mui/material";
+import { Typography, Card, CardActionArea, CardContent, CardActions, IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useSelector } from "react-redux";
-import { Route, useNavigate } from "react-router-dom";
-import { RouteParts } from "../../AppRoutes";
 
 export default function ItemCard(props){
-    const { id, name, description, additional, picture, primary_action, is_redactor } = props;
+    const { id, /*name, description, additional, picture, primary_action,*/ is_redactor,
+        update_request } = props;
     const user = useSelector(store => store.user.user);
-    const navigate = useNavigate();
     
     return (<Card 
         elevation={8} 
@@ -30,7 +28,7 @@ export default function ItemCard(props){
         </CardActionArea>
 
         {!!user && user.role === "admin" && <CardActions>
-            <IconButton onClick={() => navigate(`./${id}${RouteParts.update}`)}>
+            <IconButton onClick={() => update_request(id)}>
                 <EditIcon />
             </IconButton>
             <IconButton onClick={() => console.warn(`Delete pressed for item ${id}`)}>

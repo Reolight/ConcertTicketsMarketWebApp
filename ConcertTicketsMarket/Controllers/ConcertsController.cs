@@ -18,14 +18,14 @@ public class ConcertsController : ControllerBase
     }
 
     [HttpGet, AllowAnonymous]
-    public async Task<IActionResult> GetAllConcerts([FromQuery] string query)
+    public async Task<IActionResult> GetAllConcerts([FromQuery] string? query)
     {
         var foundConcerts = await _mediator
             .Send(new GetConcertsRequest { query = query }, CancellationToken.None);
         return Ok(new { concerts = foundConcerts.Item1, maxPages = foundConcerts.Item2 });
     }
 
-    [HttpGet, AllowAnonymous]
+    [HttpGet, AllowAnonymous, Route("{id}")]
     public async Task<IActionResult> GetConcert(Guid id)
     {
         var getConcertByIdRequest = new GetConcertByIdRequest { ConcertId = id };

@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react"
-import { getNewPerformer, initPerformerUpdate, performerTypes, voiceTypes } from "../verboseHandlers/Performers";
-import { Button, Container, Grid, TextField, breadcrumbsClasses } from "@mui/material";
+import { getNewPerformer, performerTypes, voiceTypes } from "../verboseHandlers/Performers";
+import { Button, Container, Grid, TextField } from "@mui/material";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 
 import { produce } from 'immer'
 import { Get, Post, Update } from "../../features/backfetch";
-import { stringify } from "ajv";
 import { useParams } from "react-router-dom";
 import { RouteParts } from "../../AppRoutes";
 //props contains performer;
@@ -39,23 +38,26 @@ export default function PerformerNew(props) {
     useEffect(() => {
         if (isPosting){
             if (!state.isNew){
-                const response = Update(ROUTE, state.performer);
+                const response = Update(ROUTE, { performer: {}, ...state.performer });
                 console.log(response.status);
                 return;
             }
 
-            Post(ROUTE, state.performer)
+            Post(ROUTE, { performer: {}, ...state.performer })
                 .then(data =>
                 {
                     if ('error' in data) {
                         console.error(data.error);
+                        setPosting(false);
                         return;
                     }
 
+                    setPosting(false);
                     setState(produce(draft => {
                         draft.performer = data.performer;
                         draft.isNew = false;
                     }))
+
                 });
         } else console.log(`edited?`)
     }, [isPosting])

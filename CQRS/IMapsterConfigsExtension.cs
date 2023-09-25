@@ -13,7 +13,7 @@ namespace CQRS
         {
             TypeAdapterConfig<Concert, ConcertSuperficial>
                 .NewConfig()
-                .Fork(config => config.Default.PreserveReference(true))
+                .Map(dest => dest.Duration, source => source.Duration.TotalMinutes)
                 .PreserveReference(true);
             TypeAdapterConfig<Performer, PerformerSuperficial>
                 .NewConfig()
@@ -32,6 +32,8 @@ namespace CQRS
                             ? ((Band)source).Performers.Select(performer => performer.Adapt<PerformerSuperficial>())
                             : null
                 );
+
+            
             TypeAdapterConfig<ConcertPostingModel, Concert>
                 .NewConfig()
                 .Ignore(dest => dest.Tickets);

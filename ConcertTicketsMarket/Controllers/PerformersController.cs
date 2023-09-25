@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ViewModels.PostingModels;
 
 namespace ConcertTicketsMarket.Controllers;
 
@@ -34,8 +35,9 @@ public class PerformersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddPerformer([FromBody] AddPerformerRequest addPerformerRequest)
+    public async Task<IActionResult> AddPerformer([FromBody] PerformerPostingModel performer)
     {
+        var addPerformerRequest = new AddPerformerRequest { PostingModel = performer };
         if (await _mediator.Send(addPerformerRequest) is { } newPerformer)
             return Created("created", newPerformer);
         return BadRequest();

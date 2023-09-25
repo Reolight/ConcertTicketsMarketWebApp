@@ -2,8 +2,10 @@
 using ConcertTicketsMarketModel.Model.Performers;
 using Mapster;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ViewModels;
+using ViewModels.PostingModels;
 
 namespace CQRS.Performers
 {
@@ -16,22 +18,43 @@ namespace CQRS.Performers
             _context = context;
             _logger = logger;
         }
-         
-        public async Task<Performer?> Handle(AddPerformerRequest request, CancellationToken cancellationToken)
-        {
-            Performer performer = request.PerformerType switch
+
+        private Performer ConvertToPerformerHierarchy(PerformerPostingModel postingModel)
+            => Enum.Parse<PerformerType>(postingModel.Type, true) switch
             {
-                PerformerType.Performer => request.Performer.Adapt<Performer>(),
-                PerformerType.Singer => request.Performer.Adapt<Singer>(),
-                PerformerType.Band => request.Performer.Adapt<Band>(),
+                PerformerType.Performer => new Performer
+                {
+                    Concerts = new(),
+                    Name = postingModel.Name,
+                    Origin = postingModel.Origin
+                },
+                PerformerType.Singer => new Singer
+                {
+                    Concerts = new(),
+                    Name = postingModel.Name,
+                    Origin = postingModel.Origin,
+                    VoiceType = Enum.Parse<VoiceTypes>(postingModel!.VoiceType, true)
+                },
+                PerformerType.Band => new Band
+                {
+                    Concerts = new(),
+                    Name = postingModel.Name,
+                    Origin = postingModel.Origin,
+                    Genre = postingModel!.Genre,
+                    Performers = _context.Performers
+                        .Where(performer => postingModel.Performers!.Contains(performer.Id)).ToList()
+                },
                 _ => throw new ArgumentOutOfRangeException()
             };
-            
+        
+        public async Task<Performer?> Handle(AddPerformerRequest request, CancellationToken cancellationToken)
+        {
             try
             {
+                var performer = ConvertToPerformerHierarchy(request.PostingModel);
                 var performerEntry = await _context.Performers.AddAsync(performer, cancellationToken);
                 _logger.LogInformation("Added {PerformerType} with name {Name}",
-                    request.Performer.GetType().Name, request.Performer.Name);
+                    request.PostingModel.Type, request.PostingModel.Name);
                 await _context.SaveChangesAsync(cancellationToken);
                 return performerEntry.Entity;
             }

@@ -41,7 +41,7 @@ export async function Get(route, params_obj /*is obj*/){
 }
 
 export async function Post(address, object, stringify = true, onDone /*func*/){
-    const response = await this.make_request(address, `post`, object, 'application/json', stringify)
+    const response = await make_request(address, `post`, object, 'application/json', stringify)
     onDone !== null && onDone();
     if (!response.ok)
         return await response.error;
@@ -49,6 +49,6 @@ export async function Post(address, object, stringify = true, onDone /*func*/){
 }
 
 export async function Update(address, object, stringify = true){
-    const response = await this.make_request(address, `update`, object, 'application/json', stringify);
+    const response = await make_request(address, `update`, object, 'application/json', stringify);
     return response;
 }

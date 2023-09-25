@@ -14,7 +14,7 @@ import { RouteParts } from "../../AppRoutes";
 // called as: <ItemCard name={object_linker(element, 'name') } ... />
 
 export default function DataList(props) {
-    const { route, collection_name, object_linker} = props;
+    const { route, collection_name, object_linker, update_route_prefix } = props;
     const user = useSelector(store => store.user.user);
 
     const [state, setState] = useState({
@@ -24,7 +24,7 @@ export default function DataList(props) {
         elem_count: DEFAULT_PAGE_COUNT,
         isLoading: true
     });
-    
+
     const query_builder = new AdvancedQueryBuilder();
     const [query, setQuery] = useState(query_builder.getQuery());
     const navigate = useNavigate();
@@ -48,20 +48,29 @@ export default function DataList(props) {
 
     useEffect(() => console.log(state),[state])
 
+    function updateRequest(id) {
+        const updateRoute = (!update_route_prefix? '.': `.${update_route_prefix}`)
+            + `/${id}${RouteParts.update}`;
+        navigate(updateRoute);
+    }
+
     if (state.isLoading) return <Loading />
 
     return(<>
         {!!user && user.role === 'admin' && <Button variant="contained" 
-            onClick={() => navigate(`.${RouteParts.new}`)} >Add {collection_name}
+            onClick={() => navigate(!update_route_prefix? `.${RouteParts.new}`
+                : `.${update_route_prefix}${RouteParts.new}`)} >Add {collection_name}
         </Button>}
 
         {state[collection_name] &&
         state[collection_name].length > 0 && 
         state[collection_name].map(element => <ItemCard 
             id={element.id}
+
             name={props.object_linker(element, 'name')}
             description={props.object_linker(element, 'description')}
             primary_action={props.object_linker(element, 'primary_action')}
+            update_request={updateRequest}
             key={element.id}
         />)}
 

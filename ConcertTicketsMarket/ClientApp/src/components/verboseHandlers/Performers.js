@@ -34,7 +34,6 @@ export function initPerformerUpdate(id = undefined) {
 export function getNewPerformer(){
     return { performer:
         {
-            id: '',
             type: performerTypes[0],
             name: '',
             origin: '',

@@ -1,13 +1,10 @@
 ﻿using ConcertTicketsMarketModel.Model.Performers;
 using MediatR;
-using ViewModels;
 using ViewModels.PostingModels;
 
-namespace CQRS.Performers
+namespace CQRS.Performers;
+
+public class AddPerformerRequest : IRequest<Performer?>
 {
-    public class AddPerformerRequest : IRequest<Performer?>
-    {
-        public PerformerPostingModel Performer { get; set; }
-        public PerformerType PerformerType { get; set; }
-    }
+    public PerformerPostingModel PostingModel { get; set; }
 }
