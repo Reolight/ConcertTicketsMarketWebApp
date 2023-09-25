@@ -6,7 +6,7 @@ import Loading from "./Loading";
 import ItemCard from "./ItemCard";
 import { useSelector } from "react-redux";
 import { Button } from "@mui/material";
-import { Route, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { RouteParts } from "../../AppRoutes";
 
 // object linker is a function linking object properties to ItemCard values:

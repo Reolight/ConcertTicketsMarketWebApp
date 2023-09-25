@@ -1,3 +1,4 @@
+import App from './App';
 import ApiAuthorzationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import ConcertNew from './components/Concerts/ConcertNew';
 import Concerts from './components/Concerts/Concerts';
@@ -15,30 +16,35 @@ export const RouteParts = {
 
 const AppRoutes = [
   {
-    index: true,
-    element: <Concerts />
-  },
-  {
-    path: RouteParts.performers,
-    element: <Performers />
-  },
-  {
-    path: `${RouteParts.performers}${RouteParts.new}`,
-    element: <PerformerNew />
-  },
-  {
-    path: `${RouteParts.concerts}${RouteParts.new}`,
-    element: <ConcertNew />
-  },
-  {
-    path: `${RouteParts.performers}/:id${RouteParts.update}`,
-    element: <PerformerNew />
-  },
-  {
-    path: `${RouteParts.concerts}/:id${RouteParts.update}`,
-    element: <ConcertNew />
-  },
-  ...ApiAuthorzationRoutes
+    path: '/',
+    element: <App />,
+    children: [
+      {
+        index: true,
+        element: <Concerts />
+      },
+      {
+        path: RouteParts.performers,
+        element: <Performers />
+      },
+      {
+        path: `${RouteParts.performers}${RouteParts.new}`,
+        element: <PerformerNew />
+      },
+      {
+        path: `${RouteParts.concerts}${RouteParts.new}`,
+        element: <ConcertNew />
+      },
+      {
+        path: `${RouteParts.performers}/:id${RouteParts.update}`,
+        element: <PerformerNew />
+      },
+      {
+        path: `${RouteParts.concerts}/:id${RouteParts.update}`,
+        element: <ConcertNew />
+      },
+      ...ApiAuthorzationRoutes
+  ]}
 ];
 
 export default AppRoutes;
