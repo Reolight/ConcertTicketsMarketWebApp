@@ -13,10 +13,7 @@ const context = [
   "/connect",
 
   "/ApplyDatabaseMigrations",
-  "/_framework",
-
-  '/performers',
-  '/concerts'
+  "/_framework"
 ];
 
 const onError = (err, req, resp, target) => {

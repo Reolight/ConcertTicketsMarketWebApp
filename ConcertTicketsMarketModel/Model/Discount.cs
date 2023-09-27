@@ -10,7 +10,7 @@ namespace ConcertTicketsMarketModel.Model
         public string Promocode { get; set; } = null!;
         public double Value { get; set; }
         public bool IsAbsolute { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
 
 

@@ -22,7 +22,7 @@ async function make_request(querystring, method, object, content_type, stringify
         req = {...req, body: stringify? JSON.stringify(object) : object};
 
     console.log(`fetching: `, querystring, req);
-    return fetch(querystring, req);
+    return fetch('/api/' + querystring, req);
 }
 
 export async function Get(route, params_obj /*is obj*/){

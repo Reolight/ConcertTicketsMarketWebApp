@@ -1,13 +1,15 @@
 ﻿using ConcertTicketsMarketModel.Data;
 using ConcertTicketsMarketModel.Model.Performers;
+using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SorterByCriteria;
+using ViewModels;
 
 namespace CQRS.Performers
 {
-    public class GetPerformersHandler : IRequestHandler<GetPerformersRequest, (IEnumerable<Performer>, int)>
+    public class GetPerformersHandler : IRequestHandler<GetPerformersRequest, (IEnumerable<PerformerViewModel>, int)>
     {
         private readonly AppDbContext _context;
         private readonly ILogger<GetPerformersHandler> _logger;
@@ -19,14 +21,15 @@ namespace CQRS.Performers
             _fsp = fsp;
         }
 
-        public Task<(IEnumerable<Performer>, int)> Handle(GetPerformersRequest request,
-            CancellationToken cancellationToken)
-        {
-            var tuple = (_context.Performers, _fsp).WithJsonQuery(request.JsonQuery).ApplyFilters();
-            tuple = tuple.ApplySorting();
-            tuple = tuple.ApplyAction(q => q.AsNoTracking());
-            var result = tuple.ApplyPagination();
-            return Task.FromResult(result);
-        }
+        public Task<(IEnumerable<PerformerViewModel>, int)> Handle(GetPerformersRequest request,
+            CancellationToken cancellationToken) =>
+            Task.FromResult((_context.Performers, _fsp)
+                .WithJsonQuery(request.JsonQuery)
+                .ApplyFilters()
+                .ApplySorting()
+                .ApplyProjectingAction(performers => performers
+                    .AsNoTracking()
+                    .ProjectToType<PerformerViewModel>())
+                .ApplyPagination());
     }
 }

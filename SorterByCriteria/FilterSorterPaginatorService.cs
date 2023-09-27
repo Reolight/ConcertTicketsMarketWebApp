@@ -25,7 +25,7 @@ public partial class FilterSorterPaginatorService<TContext> : IFspDeveloper
         _sorterPaginatorConfigurations = configurations.Value;
     }
 
-    public void ConsumeJsonQuery(string jsonQuery)
+    public void ConsumeJsonQuery(string? jsonQuery)
         => _cachedJson = jsonQuery;
     
     private IQueryable<TObject> FilterAndSortIQueryable<TObject>(IQueryable<TObject> queryable, in AdvancedQueryBuilt<TObject> queryBuilt) => 

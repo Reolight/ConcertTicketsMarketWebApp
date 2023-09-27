@@ -11,7 +11,7 @@ public static class FilterSorterPaginatorServiceExtensions
     
     public static (IQueryable<TObject> queryable, IFilterSorterPaginatorService fspService)
         WithJsonQuery<TObject>(this (IQueryable<TObject> queryable,
-            IFilterSorterPaginatorService fspService) serviceTuple, string jsonQuery)
+            IFilterSorterPaginatorService fspService) serviceTuple, string? jsonQuery)
     {
         serviceTuple.fspService.ConsumeJsonQuery(jsonQuery);
         return serviceTuple;

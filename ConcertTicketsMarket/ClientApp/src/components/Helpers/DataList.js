@@ -14,8 +14,8 @@ import { RouteParts } from "../../AppRoutes";
 // called as: <ItemCard name={object_linker(element, 'name') } ... />
 
 export default function DataList(props) {
-    const { route, collection_name, object_linker, update_route_prefix } = props;
     const user = useSelector(store => store.user.user);
+    const { route, collection_name, object_linker, update_route_prefix } = props;
 
     const [state, setState] = useState({
         [collection_name]: [],
