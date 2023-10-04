@@ -2,6 +2,7 @@
 using ConcertTicketsMarketModel.Data;
 using ConcertTicketsMarketModel.Data.Identity;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -48,8 +49,14 @@ public static class AppDataExtension
             .AddApiAuthorization<AppUser, IdentityContext>()
             .AddProfileService<ProfileService>();
 
-        services.AddAuthentication()
-            .AddIdentityServerJwt();
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.Audience = "localhost:44476";
+                options.Authority = "https://localhost:7175";
+                options.TokenValidationParameters.ValidateIssuer = false;
+                options.TokenValidationParameters.ValidateAudience = false;
+            });
 
         services.AddAuthorization(options =>
         {

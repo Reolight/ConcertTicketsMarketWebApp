@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { AgeRatings, ConcertTypes, getNewConcert, convertToPostingModel } from "../verboseHandlers/Concerts";
+import {
+    AgeRatings,
+    ConcertTypes,
+    getNewConcert,
+    convertToPostingModel,
+    createOrLoadCachedConcert, cacheConcert
+} from "../verboseHandlers/Concerts";
 import Loading from "../Helpers/Loading";
 import { Grid, Stack, TextField, Button, Typography, FormControl, InputLabel, Select, MenuItem, Dialog } from "@mui/material";
 import { produce } from "immer";
@@ -14,13 +20,23 @@ import { performerTypes } from "../verboseHandlers/Performers";
 import dayjs from "dayjs";
 import DiscountNew from "../Discounts/DiscountNew";
 
+function cachedInstance(){
+    return localStorage.getItem(`crt`);
+}
+
 export default function ConcertNew(props){
     const { id } = useParams();
     const [state, setState] = useState()
     const [isPosting, setPosting] = useState(false)
     const [isPickerActive, setIsPickerActive] = useState(false)
-
-    useEffect(() => {console.log((state)); },[state])
+    const [savingTimeout, setSavingTimeout] = useState(undefined);
+    
+    useEffect(() => {
+        console.log((state));
+        if (!!savingTimeout) clearTimeout(savingTimeout)
+        if (!!state && !!state.concert) setSavingTimeout(setTimeout(() => cacheConcert(state), 1000));
+    },[state])
+    
     useEffect(() => {
         if (!!id) {
             Get(`${RouteParts.concert}/${id}`).then(
@@ -32,7 +48,7 @@ export default function ConcertNew(props){
                     })
                 }
             );
-        } else setState(getNewConcert());
+        } else setState(createOrLoadCachedConcert());
     }, [props])
 
     useEffect(() => {
@@ -41,7 +57,7 @@ export default function ConcertNew(props){
             
             if (!state.isNew){
                 const response = Update(RouteParts.concerts, concertPostingModel)
-                    .then((res) => setPosting(false));
+                    .finally((res) => setPosting(false));
                 console.log(response.status);
                 return;
             }
@@ -59,7 +75,7 @@ export default function ConcertNew(props){
                         draft.isNew = false;
                     }))
                 })
-                .then(() => setPosting(false));
+                .finally(() => setPosting(false));
         } else console.log(`edited?`)
     }, [isPosting])
 
@@ -130,7 +146,7 @@ export default function ConcertNew(props){
                     label='Concert type'
                     onChange={e => handlePropertyChange(e.target.value, 'type')}
                 >
-                    {mapArrayToMenuItem(ConcertTypes)}
+                    {mapArrayToMenuItem(ConcertTypes, 0)}
                 </Select>
             </FormControl>
         </Grid>
@@ -149,7 +165,7 @@ export default function ConcertNew(props){
                     label="Duration, mins"
                     type="number"
                     onChange={e => {
-                        handlePropertyChange(e.target.value, 'duration');
+                        handlePropertyChange(Number(e.target.value), 'duration');
                     }}
                 />
             </Grid>
@@ -163,7 +179,7 @@ export default function ConcertNew(props){
                     label='Age rating'
                     onChange={e => handlePropertyChange(e.target.value, 'rating')}
                 >
-                    {mapArrayToMenuItem(AgeRatings)}
+                    {mapArrayToMenuItem(AgeRatings, 1)}
                 </Select>
             </FormControl>
         </Grid>
@@ -225,7 +241,7 @@ export default function ConcertNew(props){
         
         {!!state.concert.promocodes.length && state.concert.promocodes.map((promo, index) => {
             return (<DiscountNew 
-                key={index}
+                key={`2.${index}`}
                 index={index}
                 promo={promo}
                 handleRemove={(index) => removeItem('promocodes', index)}
@@ -290,8 +306,8 @@ export default function ConcertNew(props){
             </Grid>
     </Grid>)
 
-    function mapArrayToMenuItem(array) {
-        return array.map(type => <MenuItem key={type} value={type}>{type}</MenuItem>)
+    function mapArrayToMenuItem(array, key_base) {
+        return array.map((type, index) => <MenuItem key={`${key_base}.${index}`} value={type}>{type}</MenuItem>)
     }
 
     function handlePosting() {

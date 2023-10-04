@@ -1,7 +1,9 @@
-﻿using CQRS.Concerts;
+﻿using ConcertTicketsMarketModel.Model.Concerts;
+using CQRS.Concerts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ViewModels.PostingModels;
 
 namespace ConcertTicketsMarket.Controllers;
 
@@ -35,9 +37,9 @@ public class ConcertsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> PostConcert([FromBody] AddConcertRequest addConcertRequest)
+    public async Task<IActionResult> PostConcert([FromBody] ConcertPostingModel addConcertRequest)
     {
-        if (await _mediator.Send(addConcertRequest) is { } concert)
+        if (await _mediator.Send(new AddConcertRequest{ NewConcert = addConcertRequest}) is { } concert)
             return Created("Created", concert);
         return BadRequest();
     }

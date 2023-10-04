@@ -58,12 +58,12 @@ export default function DiscountNew(props){
                     <DateTimePicker
                         label="Valid from"
                         value={promo.startTime}
-                        onChange={e => onChange(index, 'startTime', e.target.value)}
+                        onChange={e => onChange(index, 'startTime', e)}
                     />
                     {promo.hasExpirationDate && !!promo.endTime && <DateTimePicker
                         label="Valid until"
                         value={promo.endTime}
-                        onChange={e => onChange(index, 'endTime', e.target.value)}
+                        onChange={e => onChange(index, 'endTime', e)}
                     />}
                 </Stack></Grid>
             </Grid>

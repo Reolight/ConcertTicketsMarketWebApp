@@ -17,7 +17,7 @@ async function make_request(querystring, method, object, content_type, stringify
         req = {...req, headers: {Authorization: `Bearer ${token}`}};
     if (!!content_type)
         req = {...req, headers: { ...req.headers, ['Content-type']: content_type}};
-        req = {...req, method: !!method? method : 'get'};
+    req = {...req, method: !!method? method : 'get'};
     if (!!object)
         req = {...req, body: stringify? JSON.stringify(object) : object};
 

@@ -23,9 +23,9 @@ namespace CQRS.Concerts
             try
             {
                 var convertedTickets =
-                    (await _mediator.Send(new ConvertForPostingTicketsRequest { TicketTemplates = request.Tickets },
+                    (await _mediator.Send(new ConvertForPostingTicketsRequest { TicketTemplates = request.NewConcert.Tickets },
                         cancellationToken)).ToList();
-                var concert = request.Adapt<Concert>();
+                var concert = request.NewConcert.Adapt<Concert>();
                 concert.Tickets = convertedTickets;
                 
                 var addedConcert = await _context.Concerts.AddAsync(concert, cancellationToken);

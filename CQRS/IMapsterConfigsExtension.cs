@@ -36,6 +36,8 @@ namespace CQRS
             
             TypeAdapterConfig<ConcertPostingModel, Concert>
                 .NewConfig()
+                .Map(dest => dest.Duration,
+                    src => TimeSpan.FromMinutes(src.Duration))
                 .Ignore(dest => dest.Tickets);
         }
     }

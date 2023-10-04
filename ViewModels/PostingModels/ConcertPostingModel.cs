@@ -1,6 +1,5 @@
 ﻿using ConcertTicketsMarketModel.Model;
 using ConcertTicketsMarketModel.Model.Concerts;
-using ConcertTicketsMarketModel.Model.Performers;
 
 namespace ViewModels.PostingModels;
 
@@ -9,7 +8,7 @@ public class ConcertPostingModel
     public string Name { get; set; } = null!;
     public ConcertType Type { get; set; }
     public DateTime StartTime { get; set; }
-    public TimeSpan Duration { get; set; }
+    public int Duration { get; set; }
     public AgeRating Rating { get; set; }
     
     // Location. Decided not to flatten

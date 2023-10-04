@@ -43,8 +43,8 @@ export default function SimplifiedList(props){
         {
         state[collection_name] &&
         state[collection_name].length > 0 && 
-        state[collection_name].map(element =><>
-            <ListItem key={element.id} >
+        state[collection_name].map((element, index) => (
+            <ListItem key={`9.${element.id}${index}`} >
                 <ListItemButton onClick={() => handlePicked(element)}>
                     <ListItemText
                         primary={typeof props.name === 'function'
@@ -58,6 +58,6 @@ export default function SimplifiedList(props){
                     />
                 </ListItemButton>
             </ListItem>
-        </>)}
+        ))}
     </List>);
 }

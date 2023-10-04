@@ -4,5 +4,8 @@ using ViewModels.PostingModels;
 
 namespace CQRS.Concerts
 {
-    public class AddConcertRequest : ConcertPostingModel, IRequest<Concert?> { }
+    public class AddConcertRequest : IRequest<Concert?>
+    {
+        public ConcertPostingModel NewConcert { get; set; }
+    }
 }
