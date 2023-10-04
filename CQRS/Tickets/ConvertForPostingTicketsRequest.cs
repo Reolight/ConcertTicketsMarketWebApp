@@ -7,9 +7,9 @@ using ViewModels.PostingModels;
 
 namespace CQRS.Tickets
 {
-    public class ConvertForPostingTicketsRequest : IRequest<IEnumerable<Ticket>>
+    public class ConvertForPostingTicketsRequest : IRequest<bool>
     {
+        public Guid ConcertId { get; set; }
         public List<TicketTemplate> TicketTemplates { get; set; } = null!;
-        //public Concert Concert { get; set; }
     }
 }

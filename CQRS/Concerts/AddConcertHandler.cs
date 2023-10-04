@@ -22,16 +22,19 @@ namespace CQRS.Concerts
         {
             try
             {
-                var convertedTickets =
-                    (await _mediator.Send(new ConvertForPostingTicketsRequest { TicketTemplates = request.NewConcert.Tickets },
-                        cancellationToken)).ToList();
-                var concert = request.NewConcert.Adapt<Concert>();
-                concert.Tickets = convertedTickets;
                 
+                var concert = request.NewConcert.Adapt<Concert>();
                 var addedConcert = await _context.Concerts.AddAsync(concert, cancellationToken);
                 _logger.LogInformation("Concert {NewConcertName} with ID: {EntityId}",
                     addedConcert.Entity.Name, addedConcert.Entity.Id);
                 await _context.SaveChangesAsync(cancellationToken);
+                
+                await _mediator.Send(new ConvertForPostingTicketsRequest
+                    {
+                        TicketTemplates = request.NewConcert.Tickets,
+                        ConcertId = addedConcert.Entity.Id
+                    },
+                        cancellationToken);
                 return addedConcert.Entity;
             }
             catch (Exception e)

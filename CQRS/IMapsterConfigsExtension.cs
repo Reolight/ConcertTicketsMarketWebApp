@@ -1,4 +1,5 @@
-﻿using ConcertTicketsMarketModel.Model.Concerts;
+﻿using ConcertTicketsMarketModel.Model;
+using ConcertTicketsMarketModel.Model.Concerts;
 using ConcertTicketsMarketModel.Model.Performers;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,7 +39,8 @@ namespace CQRS
                 .NewConfig()
                 .Map(dest => dest.Duration,
                     src => TimeSpan.FromMinutes(src.Duration))
-                .Ignore(dest => dest.Tickets);
+                .Map(dest => dest.Tickets,
+                    src => new List<Ticket>());
         }
     }
 }
