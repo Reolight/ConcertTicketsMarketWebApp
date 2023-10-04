@@ -1,5 +1,6 @@
 ﻿// ReSharper disable NullableWarningSuppressionIsUsed
 
+using System.ComponentModel.DataAnnotations.Schema;
 using ConcertTicketsMarketModel.Model.Performers;
 
 namespace ConcertTicketsMarketModel.Model.Concerts;
@@ -17,7 +18,10 @@ public class Concert
     public double Latitude { get; set; }
     public double Longitude { get; set; }
     
-    public List<Ticket> Tickets { get; set; } = new List<Ticket>();
-    public Performer Performer { get; set; } = null!;
+    public virtual List<Ticket> Tickets { get; set; } = new List<Ticket>();
+    
+    [ForeignKey(nameof(Performer))]
+    public Guid PerformerId { get; set; }
+    public virtual Performer Performer { get; set; } = null!;
     public List<Discount> Promocodes { get; set; } = new List<Discount>();
 }

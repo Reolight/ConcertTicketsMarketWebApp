@@ -12,6 +12,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "bootstrap": "^5.2.3",
     "dayjs": "^1.11.9",
+    "dayjs-plugin-utc": "^0.1.2",
     "http-proxy-middleware": "^2.0.6",
     "immer": "^10.0.2",
     "jquery": "^3.6.3",

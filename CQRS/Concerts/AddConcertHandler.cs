@@ -24,6 +24,7 @@ namespace CQRS.Concerts
             {
                 
                 var concert = request.NewConcert.Adapt<Concert>();
+                concert.Performer = await _context.Performers.FindAsync(concert.PerformerId) ?? throw new NullReferenceException();
                 var addedConcert = await _context.Concerts.AddAsync(concert, cancellationToken);
                 _logger.LogInformation("Concert {NewConcertName} with ID: {EntityId}",
                     addedConcert.Entity.Name, addedConcert.Entity.Id);

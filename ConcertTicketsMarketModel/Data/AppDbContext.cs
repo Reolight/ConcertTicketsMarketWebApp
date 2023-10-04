@@ -29,6 +29,11 @@ namespace ConcertTicketsMarketModel.Data
                 .WithOne()
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Concert>()
+                .HasOne(concert => concert.Performer)
+                .WithMany(performer => performer.Concerts)
+                .OnDelete(DeleteBehavior.NoAction);
+
             base.OnModelCreating(modelBuilder);
         }
     }

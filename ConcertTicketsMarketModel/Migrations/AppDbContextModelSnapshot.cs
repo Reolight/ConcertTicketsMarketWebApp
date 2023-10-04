@@ -69,9 +69,6 @@ namespace ConcertTicketsMarketWebApp.Migrations
                     b.Property<Guid?>("ConcertId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
@@ -81,6 +78,9 @@ namespace ConcertTicketsMarketWebApp.Migrations
                     b.Property<string>("Promocode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("Value")
                         .HasColumnType("float");
@@ -179,7 +179,7 @@ namespace ConcertTicketsMarketWebApp.Migrations
                     b.HasOne("ConcertTicketsMarketModel.Model.Performers.Performer", "Performer")
                         .WithMany("Concerts")
                         .HasForeignKey("PerformerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Performer");

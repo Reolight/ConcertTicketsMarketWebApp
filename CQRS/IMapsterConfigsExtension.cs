@@ -1,4 +1,5 @@
-﻿using ConcertTicketsMarketModel.Model;
+﻿using System.Security.Cryptography;
+using ConcertTicketsMarketModel.Model;
 using ConcertTicketsMarketModel.Model.Concerts;
 using ConcertTicketsMarketModel.Model.Performers;
 using Mapster;
@@ -15,6 +16,8 @@ namespace CQRS
             TypeAdapterConfig<Concert, ConcertSuperficial>
                 .NewConfig()
                 .Map(dest => dest.Duration, source => source.Duration.TotalMinutes)
+                .Map(dest => dest.StartTime,
+                    src => DateTime.SpecifyKind(src.StartTime, DateTimeKind.Utc))
                 .PreserveReference(true);
             TypeAdapterConfig<Performer, PerformerSuperficial>
                 .NewConfig()
@@ -37,6 +40,8 @@ namespace CQRS
             
             TypeAdapterConfig<ConcertPostingModel, Concert>
                 .NewConfig()
+                .Map(dest => dest.PerformerId,
+                    src => src.Performer)
                 .Map(dest => dest.Duration,
                     src => TimeSpan.FromMinutes(src.Duration))
                 .Map(dest => dest.Tickets,
